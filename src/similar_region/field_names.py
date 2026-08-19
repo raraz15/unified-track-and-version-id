@@ -1,0 +1,15 @@
+FIELD_NAMES = [
+    "clique_id",
+    "version_id0",
+    "version_id1",
+    "youtube_id0",
+    "youtube_id1",
+    "duration0",
+    "duration1",
+    "segment_duration",
+    "k",
+    "hole_height",
+    "hole_v0_start",
+    "hole_v1_start",
+    "basin_area",
+]

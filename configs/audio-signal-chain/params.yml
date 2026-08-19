@@ -1,0 +1,65 @@
+# There are parameters that you can not contol from here. Check the
+# Manipulator class in the signal_chain/manipulator.py file.
+Manipulation:
+  p: 1.0
+  PitchShift:
+    min_semitones: -12.0
+    max_semitones: 12.0
+  TimeStretch:
+    min_rate: 0.5
+    max_rate: 2.0
+  PlaybackSpeed:
+    min_rate: 0.5
+    max_rate: 2.0
+  EQ:
+    p: 0.5
+    min_gain_db: -12
+    max_gain_db: 12
+  Gain:
+    p: 0.5
+    min_gain_db: -12
+
+Degradation:
+  p: 1.0
+  PlaybackDevice:
+    p: 1.0
+    Limiter:
+      p: 0.5
+      # TODO are these values good?
+      min_threshold_db: -12
+      max_threshold_db: -1
+      min_release: 0.05
+      max_release: 0.10
+    HPF:
+      p: 0.5
+      min_cutoff_freq: 20
+      max_cutoff_freq: 150
+      min_rolloff: 6
+      max_rolloff: 18
+    Saturation:
+      p: 0.5
+      SoftClipping:
+        min_distortion: 0.05
+        max_distortion: 0.10
+      HardClipping:
+        min_percentile_threshold: 0
+        max_percentile_threshold: 10
+  Room:
+    p: 1.0
+    BackgroundNoise:
+      sounds_path: /projects/mtg/projects/unified-similarity/datasets/degradation/bg_noise/test/
+      min_snr_db: -3.0
+      max_snr_db: 15.0
+    RoomImpulseResponse:
+      ir_path: /projects/mtg/projects/unified-similarity/datasets/degradation/room_ir/test/
+  Microphone:
+    p: 1.0
+    MicrophoneImpulseResponse:
+      ir_path: /projects/mtg/projects/unified-similarity/datasets/degradation/microphone_ir/test/
+    Clipping:
+      p: 0.5
+      min_percentile_threshold: 0
+      max_percentile_threshold: 10
+    Gain:
+      p: 0.5
+      min_gain_db: -6

@@ -1,0 +1,2403 @@
+{
+    "name": "root",
+    "children": [
+        {
+            "name": "Human sounds",
+            "children": [
+                {
+                    "name": "Human voice",
+                    "children": [
+                        {
+                            "name": "Speech",
+                            "children": [
+                                {
+                                    "name": "Male speech, man speaking"
+                                },
+                                {
+                                    "name": "Female speech, woman speaking"
+                                },
+                                {
+                                    "name": "Child speech, kid speaking"
+                                },
+                                {
+                                    "name": "Conversation"
+                                },
+                                {
+                                    "name": "Narration, monologue"
+                                },
+                                {
+                                    "name": "Babbling"
+                                },
+                                {
+                                    "name": "Speech synthesizer"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Shout",
+                            "children": [
+                                {
+                                    "name": "Bellow"
+                                },
+                                {
+                                    "name": "Whoop"
+                                },
+                                {
+                                    "name": "Yell"
+                                },
+                                {
+                                    "name": "Battle cry"
+                                },
+                                {
+                                    "name": "Children shouting"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Screaming"
+                        },
+                        {
+                            "name": "Whispering"
+                        },
+                        {
+                            "name": "Laughter",
+                            "children": [
+                                {
+                                    "name": "Baby laughter"
+                                },
+                                {
+                                    "name": "Giggle"
+                                },
+                                {
+                                    "name": "Snicker"
+                                },
+                                {
+                                    "name": "Belly laugh"
+                                },
+                                {
+                                    "name": "Chuckle, chortle"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Crying, sobbing",
+                            "children": [
+                                {
+                                    "name": "Baby cry, infant cry"
+                                },
+                                {
+                                    "name": "Whimper"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Wail, moan"
+                        },
+                        {
+                            "name": "Sigh"
+                        },
+                        {
+                            "name": "Singing",
+                            "children": [
+                                {
+                                    "name": "Choir"
+                                },
+                                {
+                                    "name": "Yodeling"
+                                },
+                                {
+                                    "name": "Chant",
+                                    "children": [
+                                        {
+                                            "name": "Mantra"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Male singing"
+                                },
+                                {
+                                    "name": "Female singing"
+                                },
+                                {
+                                    "name": "Child singing"
+                                },
+                                {
+                                    "name": "Synthetic singing"
+                                },
+                                {
+                                    "name": "Rapping"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Humming"
+                        },
+                        {
+                            "name": "Groan"
+                        },
+                        {
+                            "name": "Grunt"
+                        },
+                        {
+                            "name": "Yawn"
+                        }
+                    ]
+                },
+                {
+                    "name": "Whistling",
+                    "children": [
+                        {
+                            "name": "Wolf-whistling"
+                        }
+                    ]
+                },
+                {
+                    "name": "Respiratory sounds",
+                    "children": [
+                        {
+                            "name": "Breathing",
+                            "children": [
+                                {
+                                    "name": "Wheeze"
+                                },
+                                {
+                                    "name": "Snoring"
+                                },
+                                {
+                                    "name": "Gasp"
+                                },
+                                {
+                                    "name": "Pant"
+                                },
+                                {
+                                    "name": "Snort"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cough",
+                            "children": [
+                                {
+                                    "name": "Throat clearing"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Sneeze"
+                        },
+                        {
+                            "name": "Sniff"
+                        }
+                    ]
+                },
+                {
+                    "name": "Human locomotion",
+                    "children": [
+                        {
+                            "name": "Run"
+                        },
+                        {
+                            "name": "Shuffle"
+                        },
+                        {
+                            "name": "Walk, footsteps"
+                        }
+                    ]
+                },
+                {
+                    "name": "Digestive",
+                    "children": [
+                        {
+                            "name": "Chewing, mastication"
+                        },
+                        {
+                            "name": "Biting"
+                        },
+                        {
+                            "name": "Gargling"
+                        },
+                        {
+                            "name": "Stomach rumble"
+                        },
+                        {
+                            "name": "Burping, eructation"
+                        },
+                        {
+                            "name": "Hiccup"
+                        },
+                        {
+                            "name": "Fart"
+                        }
+                    ]
+                },
+                {
+                    "name": "Hands",
+                    "children": [
+                        {
+                            "name": "Finger snapping"
+                        },
+                        {
+                            "name": "Clapping"
+                        }
+                    ]
+                },
+                {
+                    "name": "Heart sounds, heartbeat",
+                    "children": [
+                        {
+                            "name": "Heart murmur"
+                        }
+                    ]
+                },
+                {
+                    "name": "Otoacoustic emission",
+                    "children": [
+                        {
+                            "name": "Tinnitus, ringing in the ears"
+                        }
+                    ]
+                },
+                {
+                    "name": "Human group actions",
+                    "children": [
+                        {
+                            "name": "Clapping"
+                        },
+                        {
+                            "name": "Cheering"
+                        },
+                        {
+                            "name": "Applause"
+                        },
+                        {
+                            "name": "Chatter"
+                        },
+                        {
+                            "name": "Crowd"
+                        },
+                        {
+                            "name": "Hubbub, speech noise, speech babble"
+                        },
+                        {
+                            "name": "Booing"
+                        },
+                        {
+                            "name": "Children playing"
+                        },
+                        {
+                            "name": "Children shouting"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Source-ambiguous sounds",
+            "children": [
+                {
+                    "name": "Generic impact sounds",
+                    "children": [
+                        {
+                            "name": "Bang"
+                        },
+                        {
+                            "name": "Slap, smack"
+                        },
+                        {
+                            "name": "Whack, thwack"
+                        },
+                        {
+                            "name": "Smash, crash"
+                        },
+                        {
+                            "name": "Breaking"
+                        },
+                        {
+                            "name": "Bouncing"
+                        },
+                        {
+                            "name": "Knock"
+                        },
+                        {
+                            "name": "Tap"
+                        },
+                        {
+                            "name": "Thump, thud",
+                            "children": [
+                                {
+                                    "name": "Thunk"
+                                },
+                                {
+                                    "name": "Clunk"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Whip"
+                        },
+                        {
+                            "name": "Flap"
+                        }
+                    ]
+                },
+                {
+                    "name": "Surface contact",
+                    "children": [
+                        {
+                            "name": "Scratch"
+                        },
+                        {
+                            "name": "Scrape"
+                        },
+                        {
+                            "name": "Rub"
+                        },
+                        {
+                            "name": "Roll"
+                        },
+                        {
+                            "name": "Grind"
+                        }
+                    ]
+                },
+                {
+                    "name": "Deformable shell",
+                    "children": [
+                        {
+                            "name": "Crushing"
+                        },
+                        {
+                            "name": "Crumpling, crinkling"
+                        },
+                        {
+                            "name": "Tearing"
+                        }
+                    ]
+                },
+                {
+                    "name": "Onomatopoeia",
+                    "children": [
+                        {
+                            "name": "Brief tone",
+                            "children": [
+                                {
+                                    "name": "Beep, bleep"
+                                },
+                                {
+                                    "name": "Ping"
+                                },
+                                {
+                                    "name": "Ding"
+                                },
+                                {
+                                    "name": "Clang"
+                                },
+                                {
+                                    "name": "Twang"
+                                },
+                                {
+                                    "name": "Chirp, tweet"
+                                },
+                                {
+                                    "name": "Buzz"
+                                },
+                                {
+                                    "name": "Squeak"
+                                },
+                                {
+                                    "name": "Squeal"
+                                },
+                                {
+                                    "name": "Screech"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hiss"
+                        },
+                        {
+                            "name": "Creak"
+                        },
+                        {
+                            "name": "Rattle"
+                        },
+                        {
+                            "name": "Whoosh, swoosh, swish"
+                        },
+                        {
+                            "name": "Rustle"
+                        },
+                        {
+                            "name": "Whir"
+                        },
+                        {
+                            "name": "Clatter"
+                        },
+                        {
+                            "name": "Sizzle"
+                        },
+                        {
+                            "name": "Clicking",
+                            "children": [
+                                {
+                                    "name": "Tick"
+                                },
+                                {
+                                    "name": "Clip-clop"
+                                },
+                                {
+                                    "name": "Clickety-clack"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Rumble"
+                        },
+                        {
+                            "name": "Blare"
+                        },
+                        {
+                            "name": "Plop"
+                        },
+                        {
+                            "name": "Jingle, tinkle"
+                        },
+                        {
+                            "name": "Fizz"
+                        },
+                        {
+                            "name": "Puff"
+                        },
+                        {
+                            "name": "Hum"
+                        },
+                        {
+                            "name": "Squish"
+                        },
+                        {
+                            "name": "Zing"
+                        },
+                        {
+                            "name": "Boing"
+                        },
+                        {
+                            "name": "Crackle"
+                        },
+                        {
+                            "name": "Crunch"
+                        },
+                        {
+                            "name": "Crack"
+                        },
+                        {
+                            "name": "Snap"
+                        }
+                    ]
+                },
+                {
+                    "name": "Silence"
+                },
+                {
+                    "name": "Other sourceless",
+                    "children": [
+                        {
+                            "name": "Sine wave",
+                            "children": [
+                                {
+                                    "name": "Harmonic"
+                                },
+                                {
+                                    "name": "Chirp tone"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Sound effect"
+                        },
+                        {
+                            "name": "Pulse"
+                        },
+                        {
+                            "name": "Infrasound"
+                        },
+                        {
+                            "name": "Bass (frequency range)"
+                        },
+                        {
+                            "name": "Ringing (of resonator)"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Animal",
+            "children": [
+                {
+                    "name": "Domestic animals, pets",
+                    "children": [
+                        {
+                            "name": "Dog",
+                            "children": [
+                                {
+                                    "name": "Bark"
+                                },
+                                {
+                                    "name": "Yip"
+                                },
+                                {
+                                    "name": "Howl"
+                                },
+                                {
+                                    "name": "Bow-wow"
+                                },
+                                {
+                                    "name": "Growling"
+                                },
+                                {
+                                    "name": "Whimper (dog)"
+                                },
+                                {
+                                    "name": "Bay"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cat",
+                            "children": [
+                                {
+                                    "name": "Purr"
+                                },
+                                {
+                                    "name": "Meow"
+                                },
+                                {
+                                    "name": "Hiss"
+                                },
+                                {
+                                    "name": "Cat communication"
+                                },
+                                {
+                                    "name": "Caterwaul"
+                                },
+                                {
+                                    "name": "Growling"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Livestock, farm animals, working animals",
+                    "children": [
+                        {
+                            "name": "Horse",
+                            "children": [
+                                {
+                                    "name": "Clip-clop"
+                                },
+                                {
+                                    "name": "Neigh, whinny"
+                                },
+                                {
+                                    "name": "Snort (horse)"
+                                },
+                                {
+                                    "name": "Nicker"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Donkey, ass"
+                        },
+                        {
+                            "name": "Cattle, bovinae",
+                            "children": [
+                                {
+                                    "name": "Moo"
+                                },
+                                {
+                                    "name": "Cowbell"
+                                },
+                                {
+                                    "name": "Yak"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Pig",
+                            "children": [
+                                {
+                                    "name": "Oink"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Goat",
+                            "children": [
+                                {
+                                    "name": "Bleat"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Sheep",
+                            "children": [
+                                {
+                                    "name": "Bleat"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Fowl",
+                            "children": [
+                                {
+                                    "name": "Chicken, rooster",
+                                    "children": [
+                                        {
+                                            "name": "Cluck"
+                                        },
+                                        {
+                                            "name": "Crowing, cock-a-doodle-doo"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Turkey",
+                                    "children": [
+                                        {
+                                            "name": "Gobble"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Duck",
+                                    "children": [
+                                        {
+                                            "name": "Quack"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Goose",
+                                    "children": [
+                                        {
+                                            "name": "Honk"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Wild animals",
+                    "children": [
+                        {
+                            "name": "Roaring cats (lions, tigers)",
+                            "children": [
+                                {
+                                    "name": "Roar"
+                                },
+                                {
+                                    "name": "Growling"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Bird",
+                            "children": [
+                                {
+                                    "name": "Bird vocalization, bird call, bird song",
+                                    "children": [
+                                        {
+                                            "name": "Chirp, tweet"
+                                        },
+                                        {
+                                            "name": "Squawk"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Pigeon, dove",
+                                    "children": [
+                                        {
+                                            "name": "Coo"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Crow",
+                                    "children": [
+                                        {
+                                            "name": "Caw"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Owl",
+                                    "children": [
+                                        {
+                                            "name": "Hoot"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Gull, seagull"
+                                },
+                                {
+                                    "name": "Bird flight, flapping wings"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Canidae, dogs, wolves",
+                            "children": [
+                                {
+                                    "name": "Howl"
+                                },
+                                {
+                                    "name": "Growling"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Rodents, rats, mice",
+                            "children": [
+                                {
+                                    "name": "Mouse"
+                                },
+                                {
+                                    "name": "Chipmunk"
+                                },
+                                {
+                                    "name": "Patter"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Insect",
+                            "children": [
+                                {
+                                    "name": "Cricket"
+                                },
+                                {
+                                    "name": "Mosquito"
+                                },
+                                {
+                                    "name": "Fly, housefly",
+                                    "children": [
+                                        {
+                                            "name": "Buzz"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Bee, wasp, etc.",
+                                    "children": [
+                                        {
+                                            "name": "Buzz"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Frog",
+                            "children": [
+                                {
+                                    "name": "Croak"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Snake",
+                            "children": [
+                                {
+                                    "name": "Hiss"
+                                },
+                                {
+                                    "name": "Rattle"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Whale vocalization"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Sounds of things",
+            "children": [
+                {
+                    "name": "Vehicle",
+                    "children": [
+                        {
+                            "name": "Boat, Water vehicle",
+                            "children": [
+                                {
+                                    "name": "Sailboat, sailing ship"
+                                },
+                                {
+                                    "name": "Rowboat, canoe, kayak"
+                                },
+                                {
+                                    "name": "Motorboat, speedboat"
+                                },
+                                {
+                                    "name": "Ship"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Motor vehicle (road)",
+                            "children": [
+                                {
+                                    "name": "Car",
+                                    "children": [
+                                        {
+                                            "name": "Vehicle horn, car horn, honking",
+                                            "children": [
+                                                {
+                                                    "name": "Toot"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Car alarm"
+                                        },
+                                        {
+                                            "name": "Power windows, electric windows"
+                                        },
+                                        {
+                                            "name": "Skidding"
+                                        },
+                                        {
+                                            "name": "Tire squeal"
+                                        },
+                                        {
+                                            "name": "Car passing by"
+                                        },
+                                        {
+                                            "name": "Race car, auto racing"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Truck",
+                                    "children": [
+                                        {
+                                            "name": "Air brake"
+                                        },
+                                        {
+                                            "name": "Air horn, truck horn"
+                                        },
+                                        {
+                                            "name": "Reversing beeps"
+                                        },
+                                        {
+                                            "name": "Ice cream truck, ice cream van"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Bus"
+                                },
+                                {
+                                    "name": "Emergency vehicle",
+                                    "children": [
+                                        {
+                                            "name": "Police car (siren)"
+                                        },
+                                        {
+                                            "name": "Ambulance (siren)"
+                                        },
+                                        {
+                                            "name": "Fire engine, fire truck (siren)"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Motorcycle"
+                                },
+                                {
+                                    "name": "Traffic noise, roadway noise"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Rail transport",
+                            "children": [
+                                {
+                                    "name": "Train",
+                                    "children": [
+                                        {
+                                            "name": "Train whistle"
+                                        },
+                                        {
+                                            "name": "Train horn"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Railroad car, train wagon"
+                                },
+                                {
+                                    "name": "Train wheels squealing"
+                                },
+                                {
+                                    "name": "Subway, metro, underground"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Aircraft",
+                            "children": [
+                                {
+                                    "name": "Aircraft engine",
+                                    "children": [
+                                        {
+                                            "name": "Jet engine"
+                                        },
+                                        {
+                                            "name": "Propeller, airscrew"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Helicopter"
+                                },
+                                {
+                                    "name": "Fixed-wing aircraft, airplane"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Non-motorized land vehicle",
+                            "children": [
+                                {
+                                    "name": "Bicycle",
+                                    "children": [
+                                        {
+                                            "name": "Bicycle bell"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Skateboard"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Engine",
+                    "children": [
+                        {
+                            "name": "Light engine (high frequency)",
+                            "children": [
+                                {
+                                    "name": "Dental drill, dentist's drill"
+                                },
+                                {
+                                    "name": "Lawn mower"
+                                },
+                                {
+                                    "name": "Chainsaw"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Medium engine (mid frequency)"
+                        },
+                        {
+                            "name": "Heavy engine (low frequency)"
+                        },
+                        {
+                            "name": "Jet engine"
+                        },
+                        {
+                            "name": "Engine knocking"
+                        },
+                        {
+                            "name": "Engine starting"
+                        },
+                        {
+                            "name": "Idling"
+                        },
+                        {
+                            "name": "Accelerating, revving, vroom"
+                        }
+                    ]
+                },
+                {
+                    "name": "Domestic sounds, home sounds",
+                    "children": [
+                        {
+                            "name": "Door",
+                            "children": [
+                                {
+                                    "name": "Doorbell",
+                                    "children": [
+                                        {
+                                            "name": "Ding-dong"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Sliding door"
+                                },
+                                {
+                                    "name": "Slam"
+                                },
+                                {
+                                    "name": "Knock"
+                                },
+                                {
+                                    "name": "Tap"
+                                },
+                                {
+                                    "name": "Squeak"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cupboard open or close"
+                        },
+                        {
+                            "name": "Drawer open or close"
+                        },
+                        {
+                            "name": "Dishes, pots, and pans"
+                        },
+                        {
+                            "name": "Cutlery, silverware"
+                        },
+                        {
+                            "name": "Chopping (food)"
+                        },
+                        {
+                            "name": "Frying (food)"
+                        },
+                        {
+                            "name": "Microwave oven"
+                        },
+                        {
+                            "name": "Blender"
+                        },
+                        {
+                            "name": "Kettle whistle"
+                        },
+                        {
+                            "name": "Water tap, faucet"
+                        },
+                        {
+                            "name": "Sink (filling or washing)"
+                        },
+                        {
+                            "name": "Bathtub (filling or washing)"
+                        },
+                        {
+                            "name": "Hair dryer"
+                        },
+                        {
+                            "name": "Toilet flush"
+                        },
+                        {
+                            "name": "Toothbrush",
+                            "children": [
+                                {
+                                    "name": "Electric toothbrush"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Vacuum cleaner"
+                        },
+                        {
+                            "name": "Zipper (clothing)"
+                        },
+                        {
+                            "name": "Velcro, hook and loop fastener"
+                        },
+                        {
+                            "name": "Keys jangling"
+                        },
+                        {
+                            "name": "Coin (dropping)"
+                        },
+                        {
+                            "name": "Packing tape, duct tape"
+                        },
+                        {
+                            "name": "Scissors"
+                        },
+                        {
+                            "name": "Electric shaver, electric razor"
+                        },
+                        {
+                            "name": "Shuffling cards"
+                        },
+                        {
+                            "name": "Typing",
+                            "children": [
+                                {
+                                    "name": "Typewriter"
+                                },
+                                {
+                                    "name": "Computer keyboard"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Writing"
+                        }
+                    ]
+                },
+                {
+                    "name": "Bell",
+                    "children": [
+                        {
+                            "name": "Church bell"
+                        },
+                        {
+                            "name": "Cowbell"
+                        },
+                        {
+                            "name": "Jingle bell"
+                        },
+                        {
+                            "name": "Bicycle bell"
+                        },
+                        {
+                            "name": "Tuning fork"
+                        },
+                        {
+                            "name": "Chime",
+                            "children": [
+                                {
+                                    "name": "Wind chime"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Change ringing (campanology)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Alarm",
+                    "children": [
+                        {
+                            "name": "Telephone",
+                            "children": [
+                                {
+                                    "name": "Telephone bell ringing"
+                                },
+                                {
+                                    "name": "Ringtone"
+                                },
+                                {
+                                    "name": "Cellphone buzz, vibrating alert"
+                                },
+                                {
+                                    "name": "Telephone dialing, DTMF"
+                                },
+                                {
+                                    "name": "Dial tone"
+                                },
+                                {
+                                    "name": "Busy signal"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Alarm clock"
+                        },
+                        {
+                            "name": "Siren",
+                            "children": [
+                                {
+                                    "name": "Police car (siren)"
+                                },
+                                {
+                                    "name": "Ambulance (siren)"
+                                },
+                                {
+                                    "name": "Fire engine, fire truck (siren)"
+                                },
+                                {
+                                    "name": "Civil defense siren"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Doorbell",
+                            "children": [
+                                {
+                                    "name": "Ding-dong"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Buzzer"
+                        },
+                        {
+                            "name": "Smoke detector, smoke alarm"
+                        },
+                        {
+                            "name": "Fire alarm"
+                        },
+                        {
+                            "name": "Car alarm"
+                        },
+                        {
+                            "name": "Vehicle horn, car horn, honking",
+                            "children": [
+                                {
+                                    "name": "Toot"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Bicycle bell"
+                        },
+                        {
+                            "name": "Air horn, truck horn"
+                        },
+                        {
+                            "name": "Foghorn"
+                        },
+                        {
+                            "name": "Whistle",
+                            "children": [
+                                {
+                                    "name": "Kettle whistle"
+                                },
+                                {
+                                    "name": "Steam whistle"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Mechanisms",
+                    "children": [
+                        {
+                            "name": "Ratchet, pawl"
+                        },
+                        {
+                            "name": "Clock",
+                            "children": [
+                                {
+                                    "name": "Tick"
+                                },
+                                {
+                                    "name": "Tick-tock"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Gears"
+                        },
+                        {
+                            "name": "Pulleys"
+                        },
+                        {
+                            "name": "Sewing machine"
+                        },
+                        {
+                            "name": "Mechanical fan"
+                        },
+                        {
+                            "name": "Air conditioning"
+                        },
+                        {
+                            "name": "Cash register"
+                        },
+                        {
+                            "name": "Printer"
+                        },
+                        {
+                            "name": "Camera",
+                            "children": [
+                                {
+                                    "name": "Single-lens reflex camera"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Tools",
+                    "children": [
+                        {
+                            "name": "Hammer"
+                        },
+                        {
+                            "name": "Jackhammer"
+                        },
+                        {
+                            "name": "Sawing"
+                        },
+                        {
+                            "name": "Filing (rasp)"
+                        },
+                        {
+                            "name": "Sanding"
+                        },
+                        {
+                            "name": "Power tool",
+                            "children": [
+                                {
+                                    "name": "Drill",
+                                    "children": [
+                                        {
+                                            "name": "Dental drill, dentist's drill"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Explosion",
+                    "children": [
+                        {
+                            "name": "Gunshot, gunfire",
+                            "children": [
+                                {
+                                    "name": "Machine gun"
+                                },
+                                {
+                                    "name": "Fusillade"
+                                },
+                                {
+                                    "name": "Artillery fire"
+                                },
+                                {
+                                    "name": "Cap gun"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Fireworks",
+                            "children": [
+                                {
+                                    "name": "Firecracker"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Burst, pop"
+                        },
+                        {
+                            "name": "Eruption"
+                        },
+                        {
+                            "name": "Boom",
+                            "children": [
+                                {
+                                    "name": "Sonic boom"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Wood",
+                    "children": [
+                        {
+                            "name": "Chop"
+                        },
+                        {
+                            "name": "Splinter"
+                        },
+                        {
+                            "name": "Crack"
+                        },
+                        {
+                            "name": "Snap"
+                        }
+                    ]
+                },
+                {
+                    "name": "Glass",
+                    "children": [
+                        {
+                            "name": "Chink, clink"
+                        },
+                        {
+                            "name": "Shatter"
+                        }
+                    ]
+                },
+                {
+                    "name": "Liquid",
+                    "children": [
+                        {
+                            "name": "Splash, splatter",
+                            "children": [
+                                {
+                                    "name": "Slosh"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Squish"
+                        },
+                        {
+                            "name": "Drip"
+                        },
+                        {
+                            "name": "Pour",
+                            "children": [
+                                {
+                                    "name": "Trickle, dribble"
+                                },
+                                {
+                                    "name": "Gush"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Fill (with liquid)"
+                        },
+                        {
+                            "name": "Spray"
+                        },
+                        {
+                            "name": "Pump (liquid)"
+                        },
+                        {
+                            "name": "Stir"
+                        },
+                        {
+                            "name": "Boiling"
+                        }
+                    ]
+                },
+                {
+                    "name": "Miscellaneous sources",
+                    "children": [
+                        {
+                            "name": "Sonar"
+                        },
+                        {
+                            "name": "Duck call (hunting tool)"
+                        },
+                        {
+                            "name": "Arrow",
+                            "children": [
+                                {
+                                    "name": "Whoosh, swoosh, swish"
+                                },
+                                {
+                                    "name": "Thump, thud",
+                                    "children": [
+                                        {
+                                            "name": "Thunk"
+                                        },
+                                        {
+                                            "name": "Clunk"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Wobble"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Sound equipment",
+                            "children": [
+                                {
+                                    "name": "Microphone",
+                                    "children": [
+                                        {
+                                            "name": "Wind noise (microphone)"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Electronic tuner"
+                                },
+                                {
+                                    "name": "Guitar amplifier"
+                                },
+                                {
+                                    "name": "Effects unit",
+                                    "children": [
+                                        {
+                                            "name": "Chorus effect"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Specific impact sounds",
+                    "children": [
+                        {
+                            "name": "Basketball bounce"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Music",
+            "children": [
+                {
+                    "name": "Musical instrument",
+                    "children": [
+                        {
+                            "name": "Plucked string instrument",
+                            "children": [
+                                {
+                                    "name": "Guitar",
+                                    "children": [
+                                        {
+                                            "name": "Electric guitar"
+                                        },
+                                        {
+                                            "name": "Bass guitar"
+                                        },
+                                        {
+                                            "name": "Acoustic guitar"
+                                        },
+                                        {
+                                            "name": "Steel guitar, slide guitar"
+                                        },
+                                        {
+                                            "name": "Tapping (guitar technique)"
+                                        },
+                                        {
+                                            "name": "Strum"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Banjo"
+                                },
+                                {
+                                    "name": "Sitar"
+                                },
+                                {
+                                    "name": "Mandolin"
+                                },
+                                {
+                                    "name": "Zither"
+                                },
+                                {
+                                    "name": "Ukulele"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Keyboard (musical)",
+                            "children": [
+                                {
+                                    "name": "Piano",
+                                    "children": [
+                                        {
+                                            "name": "Electric piano",
+                                            "children": [
+                                                {
+                                                    "name": "Clavinet"
+                                                },
+                                                {
+                                                    "name": "Rhodes piano"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Organ",
+                                    "children": [
+                                        {
+                                            "name": "Electronic organ"
+                                        },
+                                        {
+                                            "name": "Hammond organ"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Synthesizer",
+                                    "children": [
+                                        {
+                                            "name": "Sampler"
+                                        },
+                                        {
+                                            "name": "Mellotron"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Harpsichord"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Percussion",
+                            "children": [
+                                {
+                                    "name": "Drum kit",
+                                    "children": [
+                                        {
+                                            "name": "Drum machine"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Drum",
+                                    "children": [
+                                        {
+                                            "name": "Snare drum",
+                                            "children": [
+                                                {
+                                                    "name": "Rimshot"
+                                                },
+                                                {
+                                                    "name": "Drum roll"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Bass drum"
+                                        },
+                                        {
+                                            "name": "Timpani"
+                                        },
+                                        {
+                                            "name": "Tabla"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Cymbal",
+                                    "children": [
+                                        {
+                                            "name": "Hi-hat"
+                                        },
+                                        {
+                                            "name": "Crash cymbal"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Cowbell"
+                                },
+                                {
+                                    "name": "Wood block"
+                                },
+                                {
+                                    "name": "Tambourine"
+                                },
+                                {
+                                    "name": "Rattle (instrument)",
+                                    "children": [
+                                        {
+                                            "name": "Maraca"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Gong"
+                                },
+                                {
+                                    "name": "Tubular bells"
+                                },
+                                {
+                                    "name": "Mallet percussion",
+                                    "children": [
+                                        {
+                                            "name": "Marimba, xylophone"
+                                        },
+                                        {
+                                            "name": "Glockenspiel"
+                                        },
+                                        {
+                                            "name": "Vibraphone"
+                                        },
+                                        {
+                                            "name": "Steelpan"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Orchestra"
+                        },
+                        {
+                            "name": "Brass instrument",
+                            "children": [
+                                {
+                                    "name": "French horn"
+                                },
+                                {
+                                    "name": "Trumpet"
+                                },
+                                {
+                                    "name": "Trombone"
+                                },
+                                {
+                                    "name": "Cornet"
+                                },
+                                {
+                                    "name": "Bugle"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Bowed string instrument",
+                            "children": [
+                                {
+                                    "name": "String section"
+                                },
+                                {
+                                    "name": "Violin, fiddle",
+                                    "children": [
+                                        {
+                                            "name": "Pizzicato"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Cello"
+                                },
+                                {
+                                    "name": "Double bass"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Wind instrument, woodwind instrument",
+                            "children": [
+                                {
+                                    "name": "Flute"
+                                },
+                                {
+                                    "name": "Saxophone",
+                                    "children": [
+                                        {
+                                            "name": "Alto saxophone"
+                                        },
+                                        {
+                                            "name": "Soprano saxophone"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Clarinet"
+                                },
+                                {
+                                    "name": "Oboe"
+                                },
+                                {
+                                    "name": "Bassoon"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Harp"
+                        },
+                        {
+                            "name": "Choir"
+                        },
+                        {
+                            "name": "Bell",
+                            "children": [
+                                {
+                                    "name": "Church bell"
+                                },
+                                {
+                                    "name": "Cowbell"
+                                },
+                                {
+                                    "name": "Jingle bell"
+                                },
+                                {
+                                    "name": "Bicycle bell"
+                                },
+                                {
+                                    "name": "Tuning fork"
+                                },
+                                {
+                                    "name": "Chime",
+                                    "children": [
+                                        {
+                                            "name": "Wind chime"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Change ringing (campanology)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Harmonica"
+                        },
+                        {
+                            "name": "Accordion"
+                        },
+                        {
+                            "name": "Bagpipes"
+                        },
+                        {
+                            "name": "Didgeridoo"
+                        },
+                        {
+                            "name": "Shofar"
+                        },
+                        {
+                            "name": "Theremin"
+                        },
+                        {
+                            "name": "Singing bowl"
+                        },
+                        {
+                            "name": "Musical ensemble"
+                        },
+                        {
+                            "name": "Bass (instrument role)"
+                        },
+                        {
+                            "name": "Scratching (performance technique)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Music genre",
+                    "children": [
+                        {
+                            "name": "Pop music"
+                        },
+                        {
+                            "name": "Hip hop music",
+                            "children": [
+                                {
+                                    "name": "Grime music"
+                                },
+                                {
+                                    "name": "Trap music"
+                                },
+                                {
+                                    "name": "Beatboxing"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Rock music",
+                            "children": [
+                                {
+                                    "name": "Heavy metal"
+                                },
+                                {
+                                    "name": "Punk rock"
+                                },
+                                {
+                                    "name": "Grunge"
+                                },
+                                {
+                                    "name": "Progressive rock"
+                                },
+                                {
+                                    "name": "Rock and roll"
+                                },
+                                {
+                                    "name": "Psychedelic rock"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Rhythm and blues"
+                        },
+                        {
+                            "name": "Soul music"
+                        },
+                        {
+                            "name": "Reggae",
+                            "children": [
+                                {
+                                    "name": "Dub"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Country",
+                            "children": [
+                                {
+                                    "name": "Swing music"
+                                },
+                                {
+                                    "name": "Bluegrass"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Funk"
+                        },
+                        {
+                            "name": "Folk music"
+                        },
+                        {
+                            "name": "Middle Eastern music"
+                        },
+                        {
+                            "name": "Jazz"
+                        },
+                        {
+                            "name": "Disco"
+                        },
+                        {
+                            "name": "Classical music",
+                            "children": [
+                                {
+                                    "name": "Opera"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Electronic music",
+                            "children": [
+                                {
+                                    "name": "House music"
+                                },
+                                {
+                                    "name": "Techno"
+                                },
+                                {
+                                    "name": "Dubstep"
+                                },
+                                {
+                                    "name": "Electro"
+                                },
+                                {
+                                    "name": "Drum and bass",
+                                    "children": [
+                                        {
+                                            "name": "Oldschool jungle"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Electronica"
+                                },
+                                {
+                                    "name": "Electronic dance music"
+                                },
+                                {
+                                    "name": "Ambient music",
+                                    "children": [
+                                        {
+                                            "name": "Drone music"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Trance music"
+                                },
+                                {
+                                    "name": "Noise music"
+                                },
+                                {
+                                    "name": "UK garage"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Music of Latin America",
+                            "children": [
+                                {
+                                    "name": "Cumbia"
+                                },
+                                {
+                                    "name": "Salsa music"
+                                },
+                                {
+                                    "name": "Soca music"
+                                },
+                                {
+                                    "name": "Kuduro"
+                                },
+                                {
+                                    "name": "Funk carioca"
+                                },
+                                {
+                                    "name": "Flamenco"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Blues"
+                        },
+                        {
+                            "name": "Music for children"
+                        },
+                        {
+                            "name": "New-age music"
+                        },
+                        {
+                            "name": "Vocal music",
+                            "children": [
+                                {
+                                    "name": "A capella"
+                                },
+                                {
+                                    "name": "Chant",
+                                    "children": [
+                                        {
+                                            "name": "Mantra"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Beatboxing"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Music of Africa",
+                            "children": [
+                                {
+                                    "name": "Afrobeat"
+                                },
+                                {
+                                    "name": "Kwaito"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Christian music",
+                            "children": [
+                                {
+                                    "name": "Gospel music"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Music of Asia",
+                            "children": [
+                                {
+                                    "name": "Carnatic music"
+                                },
+                                {
+                                    "name": "Music of Bollywood"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Ska"
+                        },
+                        {
+                            "name": "Traditional music"
+                        },
+                        {
+                            "name": "Independent music"
+                        }
+                    ]
+                },
+                {
+                    "name": "Musical concepts",
+                    "children": [
+                        {
+                            "name": "Song"
+                        },
+                        {
+                            "name": "Melody"
+                        },
+                        {
+                            "name": "Musical note"
+                        },
+                        {
+                            "name": "Beat",
+                            "children": [
+                                {
+                                    "name": "Drum beat"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Chord"
+                        },
+                        {
+                            "name": "Harmony"
+                        },
+                        {
+                            "name": "Bassline"
+                        },
+                        {
+                            "name": "Loop"
+                        },
+                        {
+                            "name": "Drone"
+                        }
+                    ]
+                },
+                {
+                    "name": "Music role",
+                    "children": [
+                        {
+                            "name": "Background music"
+                        },
+                        {
+                            "name": "Theme music"
+                        },
+                        {
+                            "name": "Jingle (music)"
+                        },
+                        {
+                            "name": "Soundtrack music"
+                        },
+                        {
+                            "name": "Lullaby"
+                        },
+                        {
+                            "name": "Video game music"
+                        },
+                        {
+                            "name": "Christmas music"
+                        },
+                        {
+                            "name": "Dance music"
+                        },
+                        {
+                            "name": "Wedding music"
+                        },
+                        {
+                            "name": "Birthday music"
+                        }
+                    ]
+                },
+                {
+                    "name": "Music mood",
+                    "children": [
+                        {
+                            "name": "Happy music"
+                        },
+                        {
+                            "name": "Funny music"
+                        },
+                        {
+                            "name": "Sad music"
+                        },
+                        {
+                            "name": "Tender music"
+                        },
+                        {
+                            "name": "Exciting music"
+                        },
+                        {
+                            "name": "Angry music"
+                        },
+                        {
+                            "name": "Scary music"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Natural sounds",
+            "children": [
+                {
+                    "name": "Wind",
+                    "children": [
+                        {
+                            "name": "Howl (wind)"
+                        },
+                        {
+                            "name": "Rustling leaves"
+                        },
+                        {
+                            "name": "Wind noise (microphone)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Thunderstorm",
+                    "children": [
+                        {
+                            "name": "Thunder"
+                        }
+                    ]
+                },
+                {
+                    "name": "Water",
+                    "children": [
+                        {
+                            "name": "Rain",
+                            "children": [
+                                {
+                                    "name": "Raindrop"
+                                },
+                                {
+                                    "name": "Rain on surface"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Stream"
+                        },
+                        {
+                            "name": "Waterfall"
+                        },
+                        {
+                            "name": "Ocean",
+                            "children": [
+                                {
+                                    "name": "Waves, surf"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Steam",
+                            "children": [
+                                {
+                                    "name": "Hiss"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Gurgling"
+                        }
+                    ]
+                },
+                {
+                    "name": "Fire",
+                    "children": [
+                        {
+                            "name": "Crackle"
+                        },
+                        {
+                            "name": "Wildfire"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Channel, environment and background",
+            "children": [
+                {
+                    "name": "Acoustic environment",
+                    "children": [
+                        {
+                            "name": "Inside, small room"
+                        },
+                        {
+                            "name": "Inside, large room or hall"
+                        },
+                        {
+                            "name": "Inside, public space"
+                        },
+                        {
+                            "name": "Outside, urban or manmade"
+                        },
+                        {
+                            "name": "Outside, rural or natural"
+                        },
+                        {
+                            "name": "Reverberation"
+                        },
+                        {
+                            "name": "Echo"
+                        }
+                    ]
+                },
+                {
+                    "name": "Noise",
+                    "children": [
+                        {
+                            "name": "Background noise",
+                            "children": [
+                                {
+                                    "name": "Environmental noise"
+                                },
+                                {
+                                    "name": "Tape hiss"
+                                },
+                                {
+                                    "name": "Static"
+                                },
+                                {
+                                    "name": "Mains hum"
+                                },
+                                {
+                                    "name": "Distortion"
+                                },
+                                {
+                                    "name": "Sidetone"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hubbub, speech noise, speech babble"
+                        },
+                        {
+                            "name": "Cacophony"
+                        },
+                        {
+                            "name": "White noise"
+                        },
+                        {
+                            "name": "Pink noise"
+                        },
+                        {
+                            "name": "Throbbing"
+                        },
+                        {
+                            "name": "Vibration"
+                        }
+                    ]
+                },
+                {
+                    "name": "Sound reproduction",
+                    "children": [
+                        {
+                            "name": "Television"
+                        },
+                        {
+                            "name": "Radio"
+                        },
+                        {
+                            "name": "Loudspeaker"
+                        },
+                        {
+                            "name": "Headphones"
+                        },
+                        {
+                            "name": "Recording",
+                            "children": [
+                                {
+                                    "name": "Field recording"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Gramophone record"
+                        },
+                        {
+                            "name": "Compact disc"
+                        },
+                        {
+                            "name": "MP3"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

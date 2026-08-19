@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unified-track-and-version-id"
+version = "1.0.0"
+description = "Unified music identification for tracks and versions (ISMIR 2026)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+    { name = "R. Oguz Araz" },
+    { name = "Joan Serrà" },
+    { name = "Yuki Mitsufuji" },
+    { name = "Xavier Serra" },
+    { name = "Dmitry Bogdanov" },
+]
+keywords = [
+    "music information retrieval",
+    "audio fingerprinting",
+    "version identification",
+    "cover song identification",
+]
+
+# Pinned to the exact versions this work was developed and evaluated with, so a
+# fresh install reproduces the paper's environment rather than drifting to the
+# latest releases. See environment.lock.yml for the full transitive closure.
+dependencies = [
+    "torch==2.7.1",
+    "torchaudio==2.7.1",
+    "lightning==2.5.5",
+    "numpy==2.2.6",
+    "pandas==2.3.3",
+    "scipy==1.16.2",
+    "scikit-image==0.25.2",
+    "librosa==0.11.0",
+    "soundfile==0.13.1",
+    "soxr==0.5.0.post1",
+    "audiomentations==0.43.1",
+    "nnAudio==0.3.3",
+    "cylimiter==0.4.2",
+    "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+# GPU retrieval. Needs the NVIDIA package index:
+#   pip install -e ".[gpu]" --extra-index-url https://pypi.nvidia.com
+gpu = ["cuvs-cu12==25.8.0"]
+# Weights & Biases logging during training.
+train = ["wandb==0.22.2"]
+
+[project.urls]
+Repository = "https://github.com/raraz15/unified-track-and-version-id"
+
+[tool.setuptools.packages.find]
+include = ["src*"]

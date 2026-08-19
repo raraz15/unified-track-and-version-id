@@ -1,0 +1,149 @@
+log_root_dir: logs/
+
+wandb:
+  group: clews-aligned
+  project: unified-similarity
+  entity: mtg-upf
+  save_dir: logs/
+
+train_dataloader:
+  csv_path: /home/raraz/data/dvi-similar-regions/Discogs-VI-SIREN/train/segment-cliques.csv
+  audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/train
+  room_impulse_response_dir: /projects/mtg/projects/unified-similarity/datasets/degradation/room_ir/train
+  background_noise_dir: /projects/mtg/projects/unified-similarity/datasets/degradation/bg_noise/train
+  microphone_impulse_response_dir: /projects/mtg/projects/unified-similarity/datasets/degradation/microphone_ir/train
+  segments_per_tuple: 2
+  tuples_per_batch: 220
+  steps_per_epoch: 10000
+  repeat_probability: 0.0
+  num_workers: 5
+  prefetch_factor: 2
+  augmentations:
+    random_offset_ratio: 0.05
+    random_gain:
+      p: 0.0
+      min_gain_db: -24.0 # this is actually the random final dbFS of the segment
+
+audio:
+  sample_rate: 16000
+  context_duration: 20.0
+
+input_feature:
+  hop_duration: 0.020
+  bins_per_octave: 12
+  octaves: 8 # to extract
+  octaves_use: 7 # to use for training (should be <= octaves)
+  fmin: 32.7
+
+augmentations:
+  time_domain:
+    additive_noise:
+      p: 0.25
+      SNR: [0, 12]
+      gain_db_range: [-9, 0] # after peak normalization
+    room_impulse_response:
+      p: 0.25
+      gain_db_range: [-9, 0] # after peak normalization
+    microphone_impulse_response:
+      p: 0.25
+      gain_db_range: [-9, 0] # after peak normalization
+  cqt_domain:
+    lowest_value: 0.0 # magnitude CQT
+    time_stretching:
+      p: 0.25
+      rmin: 0.55
+      rmax: 1.80
+    pitch_transpose:
+      p: 0.25
+      # the range is determined by the n_bins_cqt and the number of extra bins for pitch transposition
+    spectral_masking:
+      p: 0.25
+      freq_ratio: 0.15
+      time_ratio: 0.15
+      max_times: 1
+      union: True # True: union False: intersection
+
+feature_process:
+  power: 0.5
+  downsample_factor: 5
+  add_noise: 1.0e-6
+  affine: True
+
+network:
+  name: CLEWS
+  compile: True
+  ncha0: 128
+  ncha1: 256
+  blocks: [3,4,6,3]
+  channels: [256,512,1024,2048]
+  down: [1,2,2,1]
+  out_dim: 1024
+  gem_pool:
+    mode: single # single: shared p, multi: per-channel p
+    p: 3 # initial p value
+    learnable: True
+  l2_normalize_encoding: False
+  l2_normalize_projection: True
+  eps: 1.0e-6
+
+training:
+  loss:
+    name: Triplet
+    margin: 0.2
+    positive_mining_mode: hard
+    negative_mining_mode: hard
+    squared_distance: True
+  optimizer:
+    name: Adam
+    lr: 3.0e-4
+    weight_decay: 0.0
+    fused: True
+  scheduler:
+    name: cosineannealinglr
+    T_max: 100000
+    eta_min: 3.0e-5
+    interval: step
+    frequency: 1
+  parameters:
+    strategy: auto
+    devices: auto
+    use_distributed_sampler: False
+    max_steps: 150000
+    check_val_every_n_epoch: 1
+    log_every_n_steps: 50
+    precision: 16-mixed
+    benchmark: False
+    deterministic: False
+    detect_anomaly: False
+    num_sanity_val_steps: 0
+    # profiler: simple
+
+validation:
+  cliques_json_path: /projects/mtg/projects/version-identification/datasets/Discogs-VI/dataset_release/discogs_20240701/main/Discogs-VI-YT-20240701-light.json.val
+  retrieval:
+    clean_dataloader:
+      audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/val/database
+      max_duration: null # (seconds) you can give null to use full tracks
+      batch_size: 1 # Number of audio clips to load at a time batch
+    manipulated_and_degraded_dataloader:
+      audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/val/queries/tracks/clean-manipulated-degraded
+      max_duration: null # (seconds) you can give null to use full tracks
+      batch_size: 1 # Number of audio clips to load at a time batch
+    batch_size: 48 # Number of queries to perform retrieval & evaluation at once
+    similarity_search: NNS
+    overlap_ratio: 0.75
+    evaluation:
+      top-N: 10000
+      ckpt_metrics: ["M-JNAR", "M-AP"]
+  track_id:
+    clean_dataloader:
+      audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/val/queries/chunks/clean
+      batch_size: 64 # Number of audio clips to load at a time batch
+    manipulated_and_degraded_dataloader:
+      audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/val/queries/chunks/clean-manipulated-degraded
+      batch_size: 64 # Number of audio clips to load at a time batch
+    batch_size: 48 # Number of queries to perform retrieval & evaluation at once
+  alignment:
+    csv_path: /home/raraz/data/dvi-similar-regions/Discogs-VI-SIREN/val/segment-cliques.csv
+    audio_dir: /localdisk/raraz/unified-similarity/datasets/discogs-vi-yt-16khz/val/database
+    steps_per_epoch: 1000

@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+
+# Packaging build artifacts (created by pip install -e .)
+*.egg-info/
+build/
+dist/
+
+# Notebooks
+*.ipynb_checkpoints*
+
+# Editor / tooling / agent state
+settings.json
+.claude/
+.vscode/
+
+# Working directories (not part of the release)
+logs/
+tmp/
+TODO.md
+
+# Data and generated artifacts.
+# These globs are deliberately broad: embeddings, path lists, ground-truth
+# tables and audio are written all over the tree during experiments. Anything
+# that is genuinely part of the repository must be un-ignored below.
+*.txt
+*.csv
+*.split.*
+*.npy
+*.wav
+
+# ...repository files the globs above would otherwise swallow:
+!requirements.txt
+!requirements-*.txt
+!configs/**/*.csv
+!data/**

@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import time
 import json
 from pathlib import Path
@@ -15,8 +16,7 @@ from src.evaluation.utils import (
     infer_output_dir_from_queries,
 )
 import src.evaluation.metrics as metrics
-from src.common.utils import sec_to_hms, set_seed
-
+from src.common.utils import sec_to_hms, set_seed, get_git_commit, json_default
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -48,12 +48,12 @@ if __name__ == "__main__":
         default=None,
         help="Path to the database directory which had been built previously.",
     )
-    group.add_argument(
-        "--database-index",
-        type=Path,
-        default=None,
-        help="Path to the directory that contains a trained and populated index.",
-    )
+    # group.add_argument(
+    #     "--database-index",
+    #     type=Path,
+    #     default=None,
+    #     help="Path to the directory that contains a trained and populated index.",
+    # )
     parser.add_argument(
         "--id-level",
         "-i",
@@ -212,6 +212,25 @@ if __name__ == "__main__":
     print(f"Metrics are written to \033[32m{metrics_path}\033[0m")
     with open(metrics_path, "w") as o_f:
         json.dump(all_queries_results, o_f, indent=4)
+        o_f.write("\n")
+
+    # Record what produced these metrics: the resolved arguments, including the
+    # index parameters get_index() filled in, plus the commit they ran on.
+    args_path = args.output_dir / "args.json"
+    print(f"Arguments are written to \033[32m{args_path}\033[0m")
+    with open(args_path, "w") as o_f:
+        json.dump(
+            {
+                **vars(args),
+                "n_lists": index_dict["n_lists"],
+                "n_probes": index_dict["n_probes"],
+                "timestamp": datetime.datetime.now().isoformat(),
+                "git_commit": get_git_commit(),
+            },
+            o_f,
+            indent=4,
+            default=json_default,
+        )
         o_f.write("\n")
 
     print("Done!")

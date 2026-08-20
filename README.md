@@ -105,9 +105,9 @@ scripts/             preprocessing, similar-region, and SLURM job scripts
 
 The derived annotations are released as **Discogs-VI-SIREN** (SImilar REgioNs between musical versions in Discogs-VI):
 
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21742034-blue)](https://doi.org/10.5281/zenodo.21742034)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21742033-blue)](https://doi.org/10.5281/zenodo.21742033)
 
-<https://doi.org/10.5281/zenodo.21742034>
+<https://doi.org/10.5281/zenodo.21742033>
 
 | File | Contents |
 |---|---|
@@ -133,7 +133,7 @@ The bash scripts under `scripts/slurm/` record exactly how each step was run, in
 1. Silence filtering by RMS — `scripts/slurm/find-silent-tracks.sh`
 1. Move the silent tracks to a separate directory
 1. Tag the audio segments of the remaining tracks with [PANNs](https://github.com/qiuqiangkong/audioset_tagging_cnn). We used the `Cnn14_16k` model (mAP 0.438) over 10 s windows with a 1 s hop, keeping the top 20 tags per window, with the 16 kHz mel front-end the checkpoint expects (window 512, hop 160, 64 mel bins, `fmin` 50, `fmax` 8000). It writes one JSON of per-segment tags per track, which is the input to the next step. Like the CLEWS step below, this runs someone else's model in its own environment. Our batched, SLURM-partitioned inference driver is a single commit on top of upstream, on the `unified-track-and-version-id` branch of [raraz15/audioset_tagging_cnn](https://github.com/raraz15/audioset_tagging_cnn/tree/unified-track-and-version-id)
-1. Find which segments are non-music — `scripts/slurm/non-music-finder.sh`. This also reports tracks that are entirely silent
+1. Find which segments are non-music — `scripts/slurm/non-music-finder.sh`. A window is non-music when its top PANNs tag falls outside the *Music*, *Singing* and *Humming* families of the AudioSet ontology. This also reports the tracks that are non-music throughout. **The output of steps 4 and 5 is published in Discogs-VI-SIREN as `nonmusic-annotations.tar.gz`, so both can be skipped**
 1. Move the completely non-music tracks to a separate directory
 1. Split the remainder into `train/`, `val/database` and `test/database` (the clean tracks form the retrieval database)
 
@@ -169,7 +169,7 @@ We call one such matching region pair a *basin*; the basins are what `similar-re
 The pipeline has three steps:
 
 1. Extract CLEWS embeddings — `scripts/slurm/clews-embedding-extraction.sh`, wrapping `scripts/similar-region/clews-embedding-extraction.py`. This requires a checkout of the original [CLEWS](https://github.com/sony/clews) library. This step stands apart from the rest of the repository: it runs CLEWS, not our model, in its own conda environment with CLEWS's own dependencies — not the `unified` environment — and it is needed only to rebuild the training annotations from scratch. If you download the released segment-clique CSVs, you can skip it entirely.
-1. Find non-music segments (see [Data preprocessing](#discogs-vi) above)
+1. Find non-music segments (see [Data preprocessing](#discogs-vi) above) — or download them as part of [Discogs-VI-SIREN](#training-data), which is what the released annotations were built with
 1. Locate the similar regions — `scripts/slurm/similar-region-location.sh`, wrapping `scripts/similar-region/similar-region-location.py`
 
 ### CLEWS embeddings
@@ -309,7 +309,7 @@ This project is released under the **MIT License**. See [LICENSE](LICENSE) for t
 
 The model components in `src/fish/model/nets/clews.py` are adapted from [sony/clews](https://github.com/sony/clews), which is also MIT licensed; the original copyright notice and permission notice are retained in that file.
 
-The Discogs-VI-SIREN data released alongside this work carries its own MIT license, stated on its [Zenodo record](https://doi.org/10.5281/zenodo.21742034).
+The Discogs-VI-SIREN data released alongside this work carries its own MIT license, stated on its [Zenodo record](https://doi.org/10.5281/zenodo.21742033).
 
 ## Citation
 

@@ -34,7 +34,7 @@ to get absolute paths.
 
 The Discogs-VI splits are separated by musical work, so no clique spans two
 splits. The same partition underlies the segment-clique annotations released as
-Discogs-VI-SIREN (<https://doi.org/10.5281/zenodo.21742034>).
+Discogs-VI-SIREN (<https://doi.org/10.5281/zenodo.21742033>).
 
 ## Version identification ground truth
 
@@ -101,3 +101,8 @@ uses it by default; override with `--ontology`.
 
 The AudioSet ontology is published by Google under CC-BY-4.0:
 <https://github.com/audioset/ontology>
+
+The annotations that script produced over Discogs-VI-YT — which windows of which
+recordings are non-music — are published as `nonmusic-annotations.tar.gz` in
+Discogs-VI-SIREN (<https://doi.org/10.5281/zenodo.21742033>), so the tagging does
+not have to be repeated. They cover the test split as well as train and val.

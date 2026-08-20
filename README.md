@@ -80,11 +80,11 @@ One `.npy` file is written per input track, mirroring the input directory struct
 | `train.py` | Train a model from a YAML config |
 | `validate.py` | Run the validation suite from a checkpoint |
 | `inference.py` | Extract embeddings from audio |
-| `evaluate.py` | Approximate retrieval + evaluation with cuVS IVF-Flat |
-| `exhaustive-retrieval.py` | Brute-force retrieval against an embedding database |
+| `evaluate.py` | Approximate retrieval with cuVS IVF-Flat + evaluation |
+| `exhaustive-retrieval.py` | Exhaustive retrieval + evaluation |
 | `manipulate-and-degrade.py` | Build manipulated/degraded query sets |
-| `validate-from-ext-ti.py` | Track-ID evaluation from pre-extracted embeddings |
-| `validate-from-ext-vi.py` | Version-ID evaluation from pre-extracted embeddings |
+| `validate-from-ext-ti.py` | Track-ID evaluation with Exhaustive retrieval from pre-extracted embeddings |
+| `validate-from-ext-vi.py` | Version-ID evaluation with Exhaustive retrieval from pre-extracted embeddings |
 
 Every script documents its arguments under `--help`.
 
@@ -124,6 +124,8 @@ Discogs-VI-SIREN is released under the MIT license, separately from the code in 
 
 ### Discogs-VI
 
+We use Discogs-VI for training, and evaluation.
+
 The bash scripts under `scripts/slurm/` record exactly how each step was run, including the arguments used.
 
 1. Convert to 16 kHz 16-bit wav — `scripts/slurm/preprocess-discogs-vi-yt.sh`
@@ -133,6 +135,28 @@ The bash scripts under `scripts/slurm/` record exactly how each step was run, in
 1. Find which segments are non-music — `scripts/slurm/non-music-finder.sh`. This also reports tracks that are entirely silent
 1. Move the completely non-music tracks to a separate directory
 1. Split the remainder into `train/`, `val/database` and `test/database` (the clean tracks form the retrieval database)
+
+### Neural-music-fp
+
+We use the neural-music-fp test set for track identification only, so no filtering or splitting is needed — the tracks are used as the retrieval database as they are.
+
+NMFP distributes its audio at 8 kHz, so instead of upsampling it we go back to the sources: the input is a line-delimited list of the *original* FMA files corresponding to the NMFP test tracks.
+
+1. Convert those files to 16 kHz 16-bit mono wav — `scripts/slurm/preprocess-nmfp-test.sh`, which mirrors the FMA directory structure into `test/database/`
+
+The same conversion applies to the degradation sets NMFP ships (background noise and impulse responses) — `scripts/slurm/preprocess-degradation.sh`, one collection per run. The resulting 16 kHz files are released on Zenodo:
+
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22026053-blue)](https://doi.org/10.5281/zenodo.22026053)
+
+<https://doi.org/10.5281/zenodo.22026053>
+
+### SHS100K2
+
+We use the SHS100K2 test set for version identification only, again with no filtering or splitting.
+
+1. Convert to 16 kHz 16-bit mono wav — `scripts/slurm/preprocess-shs100k.sh`. The audio comes from YouTube as `.mp4`, exactly like Discogs-VI-YT, so this reuses `scripts/preprocess-audio/preprocess-discogs-vi.py` unchanged
+
+The track list is in [`data/splits/shs100k-test-paths.txt`](data/splits/shs100k-test-paths.txt).
 
 ## Similar region location
 
@@ -264,7 +288,7 @@ Both are cluster-specific in their partitions and, for version identification, i
 
 ## Datasets
 
-The experiments use Discogs-VI and SHS100K2 for version identification, and the neural-music-fp test set (drawn from FMA) for track identification. Query degradation draws on TUT Acoustic Scenes 2016 for background noise, and the MIT Survey, AIR and OpenAIR impulse response collections plus a microphone impulse response set for convolutional degradation.
+The experiments use [Discogs-VI](https://doi.org/10.5281/zenodo.13983028) for both version identification and track identification, [SHS100K2](https://github.com/NovaFrost/SHS100K2) for version identification, and the [neural-music-fp](https://github.com/raraz15/neural-music-fp#dataset-for-training-and-evaluation) test set (drawn from FMA) for track identification. Query degradation draws on TUT Acoustic Scenes 2016 for background noise, and the MIT Survey, AIR and OpenAIR impulse response collections plus a microphone impulse response set for convolutional degradation. All of these degradation sets are taken from the neural-music-fp (NMFP) data release. NMFP distributes its audio at 8 kHz, whereas we work at 16 kHz, so we re-processed the original source files (44.1 kHz and above) to 16 kHz — the audio files themselves are the same, only the sample rate differs. The 16 kHz versions of the NMFP degradation sets are released at <https://doi.org/10.5281/zenodo.22026053>.
 
 [`data/`](data/) holds everything needed to reproduce the evaluation except the audio: the train/validation/test track lists in `data/splits/`, and the ground-truth files `evaluate.py` consumes in `data/ground-truth/` — clique definitions for version identification, and query-to-reference maps for track identification. See [data/README.md](data/README.md).
 

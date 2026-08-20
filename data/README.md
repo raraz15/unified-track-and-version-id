@@ -70,12 +70,27 @@ Boundary indices are sample offsets into the reference recording at 16 kHz.
 Each contains `clean.csv`, `clean-manipulated.csv` and
 `clean-manipulated-degraded.csv`, one per query condition.
 
+These six files are kept here so that a fresh clone can run `evaluate.py`
+without a separate download. Byte-identical copies are also archived in the
+evaluation query metadata record on Zenodo
+(<https://doi.org/10.5281/zenodo.22027253>), which is the
+canonical copy: it additionally carries the per-query manipulation and
+degradation parameters, and the version-identification query metadata that is
+not needed for evaluation and so is not duplicated here. If the two ever
+disagree, the Zenodo record is correct.
+
 ## What is not here
 
-The query audio itself. The manipulated and degraded chunks are regenerated
+The query audio itself. The manipulated and degraded queries are regenerated
 from the clean test tracks with `manipulate-and-degrade.py`, which is seeded;
-the CSVs above describe the result. Validation-split ground truth is also
-omitted — only the test sets are needed to reproduce the reported results.
+the CSVs above describe the result. Reproducing them does not have to rely on
+the seed, though: the Zenodo record referenced above publishes the exact
+parameters sampled for every individual query — which impulse responses, what
+SNR, how much pitch shift — together with the degradation audio those
+parameters refer to (<https://doi.org/10.5281/zenodo.22026053>).
+
+Validation-split ground truth is also omitted — only the test sets are needed
+to reproduce the reported results.
 
 ## AudioSet ontology
 

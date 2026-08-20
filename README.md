@@ -113,10 +113,11 @@ The derived annotations are released as **Discogs-VI-SIREN** (SImilar REgioNs be
 |---|---|
 | `similar-regions.csv` | ~106 M rows — basins (matching regions) between pairs of versions |
 | `segment-cliques.csv` | ~20.6 M rows — segments across versions covering the same musical passage |
+| `nonmusic-annotations.tar.gz` | 42,754 per-recording JSONs — the windows PANNs tagged as non-music, plus the 197 recordings that are non-music throughout |
 
 Train and validation splits are separated by work. Point `train_dataloader.csv_path` (and the validation dataloaders) in `configs/train/fish.yaml` at the `segment-cliques.csv` for the corresponding split.
 
-Downloading this record lets you skip the preprocessing, similar-region and segment-clique pipelines described below and go straight to training. The audio itself is not included — it comes from Discogs-VI-YT.
+Downloading this record lets you skip the preprocessing, similar-region and segment-clique pipelines described below and go straight to training. It also carries the non-music annotations those pipelines consume, so the similar-region stage can be re-run without repeating the PANNs tagging — the one step that would otherwise mean running a second model over the whole collection. The audio itself is not included — it comes from Discogs-VI-YT.
 
 Discogs-VI-SIREN is released under the MIT license, separately from the code in this repository.
 
@@ -291,6 +292,12 @@ Both are cluster-specific in their partitions and, for version identification, i
 The experiments use [Discogs-VI](https://doi.org/10.5281/zenodo.13983028) for both version identification and track identification, [SHS100K2](https://github.com/NovaFrost/SHS100K2) for version identification, and the [neural-music-fp](https://github.com/raraz15/neural-music-fp#dataset-for-training-and-evaluation) test set (drawn from FMA) for track identification. Query degradation draws on TUT Acoustic Scenes 2016 for background noise, and the MIT Survey, AIR and OpenAIR impulse response collections plus a microphone impulse response set for convolutional degradation. All of these degradation sets are taken from the neural-music-fp (NMFP) data release. NMFP distributes its audio at 8 kHz, whereas we work at 16 kHz, so we re-processed the original source files (44.1 kHz and above) to 16 kHz — the audio files themselves are the same, only the sample rate differs. The 16 kHz versions of the NMFP degradation sets are released at <https://doi.org/10.5281/zenodo.22026053>.
 
 [`data/`](data/) holds everything needed to reproduce the evaluation except the audio: the train/validation/test track lists in `data/splits/`, and the ground-truth files `evaluate.py` consumes in `data/ground-truth/` — clique definitions for version identification, and query-to-reference maps for track identification. See [data/README.md](data/README.md).
+
+The query audio is not released, but the metadata needed to rebuild it is. The evaluation query metadata record holds, for every track- and version-identification query across all three test sets, the chunk timestamps and the exact parameters `manipulate-and-degrade.py` sampled for it — which impulse responses, what SNR, how much pitch shift:
+
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22027253-blue)](https://doi.org/10.5281/zenodo.22027253)
+
+<https://doi.org/10.5281/zenodo.22027253>
 
 ## A note on the SLURM scripts
 

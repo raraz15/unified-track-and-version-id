@@ -19,6 +19,7 @@ ground-truth/    query -> reference correspondences for evaluation
 | `splits/discogs-vi-val-paths.txt` | 37,081 | Discogs-VI-YT validation tracks |
 | `splits/discogs-vi-test-paths.txt` | 116,197 | Discogs-VI-YT test tracks |
 | `splits/shs100k-test-paths.txt` | 10,547 | SHS100K2 test tracks |
+| `splits/nmfp-test-paths.txt` | 95,134 | neural-music-fp test tracks, as FMA source files |
 
 One track per line, as a path relative to the root of the corresponding
 preprocessed (16 kHz, 16-bit wav) audio collection:
@@ -31,6 +32,26 @@ The two-character parent directory is the first two characters of the YouTube
 ID, matching the layout produced by `scripts/slurm/preprocess-discogs-vi-yt.sh`
 and `scripts/slurm/preprocess-shs100k.sh`. Prefix them with your own audio root
 to get absolute paths.
+
+`nmfp-test-paths.txt` is the exception. The neural-music-fp test tracks come
+from FMA, and we re-encode the *original* FMA files rather than upsampling the
+8 kHz audio NMFP distributes, so this list gives paths relative to the root of
+the FMA audio collection, with FMA's own extension:
+
+```
+000/000003.mp3
+```
+
+It is the input `scripts/slurm/preprocess-nmfp-test.sh` expects. The
+preprocessed counterpart of each line is `test/database/000/000003.wav`, since
+the conversion mirrors the FMA directory structure.
+
+Two counts worth reconciling. Our run started from 95,163 FMA files, of which
+29 failed to decode; those are already excluded here, so working from this list
+reproduces our database exactly. And the NMFP track-identification ground truth
+lists 94,684 queries against these 95,134 database tracks: 450 of them are
+shorter than the 10 s query chunk, so they yield no query while still serving as
+distractors in the database.
 
 The Discogs-VI splits are separated by musical work, so no clique spans two
 splits. The same partition underlies the segment-clique annotations released as

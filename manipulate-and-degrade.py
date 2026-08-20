@@ -58,7 +58,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--params",
-        default=Path("configs/audio-signal-chain/params.yaml"),
+        default=Path("configs/audio-signal-chain/params.yml"),
         type=Path,
         help="""Path to the yaml file containing the manipulation and degradation parameters.""",
     )
@@ -115,9 +115,9 @@ if __name__ == "__main__":
     audio_paths = list(sorted(args.input_dir.rglob("*.wav")))
     logging.info(f"{len(audio_paths):,} .wav files found.")
 
-    with open(args.params_yaml) as i_f:
+    with open(args.params) as i_f:
         params = yaml.safe_load(i_f)
-    shutil.copy(args.params_yaml, str(args.output_dir))
+    shutil.copy(args.params, str(args.output_dir))
 
     now = datetime.datetime.now().isoformat()
     metadata = {"timestamp": now, "git_commit": get_git_commit()}

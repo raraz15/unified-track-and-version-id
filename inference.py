@@ -146,7 +146,7 @@ if __name__ == "__main__":
         "--batch-size",
         type=int,
         default=1,
-        help="Batch size for the dataloader.",
+        help="Batch size for the dataloader, measured in number of tracks.",
     )
     parser.add_argument(
         "--no-inference-mode",

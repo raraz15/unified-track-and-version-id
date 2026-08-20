@@ -117,7 +117,7 @@ if __name__ == "__main__":
     index, search_params, track_boundaries, db_emb_fnames = get_index(
         id_level=args.id_level,
         index_dict=index_dict,
-        index_path=args.database_index,
+        index_path=None,  # TODO: re-enable --database-index once a trained index can be reloaded
         merged_emb_path=args.database_memmap,
         embeddings_dir=args.database_embeddings,
         num_workers=args.num_workers,

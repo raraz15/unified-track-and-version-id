@@ -6,19 +6,33 @@ A single embedding model handles both *track identification* (finding the exact 
 Audio is embedded segment-by-segment, and the same embedding space serves both retrieval tasks.
 
 > **Note:** retrieval is GPU-only. The similarity search is built on [cuVS](https://github.com/rapidsai/cuvs) and there is no CPU fallback.
+> **TODO:** Some ipynb notebooks for similar region and segment clique analysis, statistics, and visiualization are coming soon...
 
 ## Overview
 
 | | |
 |---|---|
-| Input | 16 kHz mono audio, 20 s context windows |
-| Front-end | CQT — 12 bins/octave, 8 octaves extracted (7 used), `fmin` 32.7 Hz, 20 ms hop |
-| Encoder | CLEWS-style IBN-ResNet with learnable GeM pooling |
+| Input | 16 kHz mono audio, supports variable duration inputs but was trained with a 20s context window |
+| Front-end | CQT — 12 bins/octave, 7 octaves from `fmin` 32.7 Hz, 20 ms hop |
+| Encoder | CLEWS-style ResNet50-IBN with learnable GeM pooling |
 | Embedding | 1024-d, L2-normalized |
 | Training | Triplet loss with hard positive/negative mining, Adam + cosine annealing |
 | Retrieval | cuVS IVF-Flat, or exhaustive search for smaller databases |
 
 Training targets are built from *segment-level cliques*: rather than treating whole tracks as positives, the pipeline locates the regions of two versions that actually correspond, and trains on those.
+
+## Why this codebase
+
+Beyond reproducing the paper, some pieces here are worth reusing:
+
+- **Track-level reduction on the GPU** — segment hits collapse to one score per track with no Python loop over candidates and no per-segment track-id array over the database: sort once, `bucketize` against track offsets, `scatter_reduce_`. [src/retrieval/reduction/](src/retrieval/reduction/)
+- **Multi-GPU validation with proper sharding** — validation tracks are sharded across ranks and gathered back at their true lengths. No padding to a fixed segment count and no cutting tracks to a common length, because embeddings stay flat with a per-track `sizes` vector. [src/fish/model/litmodule.py](src/fish/model/litmodule.py)
+- **cuVS instead of FAISS** — installs as an ordinary CUDA wheel with no build matrix to match against your toolkit, and takes torch tensors directly, so queries never leave the GPU. [src/retrieval/database/index.py](src/retrieval/database/index.py)
+- **Approximate and exhaustive retrieval behind the same metrics** — `evaluate.py` and `exhaustive-retrieval.py`, so approximation error can be separated from model error.
+- **Metrics without the usual bugs** — the relevant set counts only versions actually in the database, the query is dropped from its own results, truncating at K penalizes AP rather than inflating it, unretrieved relevant items are charged worst-case ranks in NAR, NAR is unbiased by default, and every number carries a confidence interval. [src/evaluation/metrics/](src/evaluation/metrics/)
+- **Database tooling** — hundreds of thousands of per-track `.npy` files merge into one `float16` memmap plus a CSV of track offsets, built once and reused across runs; those same offsets drive the GPU reduction. [src/retrieval/database/](src/retrieval/database/)
+
+> **TODO:** writing a trained index to disk and reloading it is implemented but disabled — a cuVS 25.8 bug with FP16 datasets, fixed in a later release. Until then every run retrains the index.
 
 ## Installation
 
@@ -51,11 +65,9 @@ The pre-trained checkpoint is on Zenodo:
 
 Selected at step 90000 as the maximum of the composite validation metric. It is a full Lightning checkpoint, so it can also be resumed from with `train.py --ckpt`.
 
-Note that the dataset paths recorded inside the checkpoint are the ones from our cluster. They are inert for `inference.py` and for resuming training, which reads its configuration from the config file you pass on the command line, but `validate.py` builds its dataloaders from the embedded configuration and will need them pointed at your own copies of the data.
+## Quickstart: extracting embedding
 
-## Quickstart: extracting embeddings
-
-Do not load the bare PyTorch model. The Lightning module's `extract_embeddings()` handles segmentation, padding and pooling the way the model expects, and `inference.py` drives it correctly — including multi-GPU.
+Do *not* load the bare PyTorch model. The Lightning module's `extract_embeddings()` handles segmentation, padding and pooling the way the model expects, and `inference.py` drives it correctly — including multi-GPU.
 
 ```bash
 python inference.py <audio_dir_or_file> <checkpoint.ckpt> <output_dir>
@@ -71,6 +83,8 @@ python inference.py audio/ epoch-8-step-90000.ckpt embeddings/ \
     --num-workers 6
 ```
 
+The model was trained with 20s context duration but it supports variable length inputs. If an audio input is shorter than the specified segment duration, the code zero pads from the right. If the audio input is longer than the segment duration, the code segments the audio using the overlap ratio. So if you need to modify the inference segment duration, maybe read the paper to make an educated choice.
+
 One `.npy` file is written per input track, mirroring the input directory structure, containing that track's segment embeddings.
 
 ## Entry points
@@ -80,8 +94,8 @@ One `.npy` file is written per input track, mirroring the input directory struct
 | `train.py` | Train a model from a YAML config |
 | `validate.py` | Run the validation suite from a checkpoint |
 | `inference.py` | Extract embeddings from audio |
-| `evaluate.py` | Approximate retrieval with cuVS IVF-Flat + evaluation |
-| `exhaustive-retrieval.py` | Exhaustive retrieval + evaluation |
+| `evaluate.py` | Approximate retrieval with cuVS IVF-Flat + evaluation (Main results in the paper) |
+| `exhaustive-retrieval.py` | Exhaustive retrieval |
 | `manipulate-and-degrade.py` | Build manipulated/degraded query sets |
 | `validate-from-ext-ti.py` | Track-ID evaluation with Exhaustive retrieval from pre-extracted embeddings |
 | `validate-from-ext-vi.py` | Version-ID evaluation with Exhaustive retrieval from pre-extracted embeddings |
@@ -137,11 +151,11 @@ The bash scripts under `scripts/slurm/` record exactly how each step was run, in
 1. Move the completely non-music tracks to a separate directory
 1. Split the remainder into `train/`, `val/database` and `test/database` (the clean tracks form the retrieval database)
 
-### Neural-music-fp
+### Neural-Music-**FP**
 
 We use the neural-music-fp test set for track identification only, so no filtering or splitting is needed — the tracks are used as the retrieval database as they are.
 
-NMFP distributes its audio at 8 kHz, so instead of upsampling it we go back to the sources: the input is a line-delimited list of the *original* FMA files corresponding to the NMFP test tracks.
+NMFP distributes its audio at 8 kHz, so instead of upsampling it we go back to the sources: the input is a line-delimited list of the *original* FMA files corresponding to the NMFP test tracks, released as [`data/splits/nmfp-test-paths.txt`](data/splits/nmfp-test-paths.txt) (95,134 tracks, as paths relative to the FMA audio root).
 
 1. Convert those files to 16 kHz 16-bit mono wav — `scripts/slurm/preprocess-nmfp-test.sh`, which mirrors the FMA directory structure into `test/database/`
 
@@ -250,7 +264,7 @@ python evaluate.py <query_embeddings> <ground_truth.csv> \
 
 `--id-level` selects between `track` and `version` identification. Reported metrics include mean average precision (M-AP) and M-NAR, the mean normalized average ranking (unbiased variant).
 
-The database must be given in exactly one of three forms: `--database-embeddings` for a directory of per-track `.npy` files, `--database-memmap` for a `database.mm` built by an earlier run, or `--database-index` for an index already trained and populated with `--save-index`.
+The database must be given in exactly one of two forms: `--database-embeddings` for a directory of per-track `.npy` files, or `--database-memmap` for a `database.mm` built by an earlier run. Either way the IVF-Flat index is trained at the start of the run; see the TODO under [Why this codebase](#why-this-codebase).
 
 ### SLURM wrappers
 

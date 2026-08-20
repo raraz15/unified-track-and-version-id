@@ -49,15 +49,9 @@ The pre-trained checkpoint is on Zenodo:
 | `hparams.yaml` | The configuration the model was trained with |
 | `metrics.csv` | Training and validation curves for the run |
 
-Selected at step 90000 as the maximum of the composite validation metric. It is
-a full Lightning checkpoint, so it can also be resumed from with
-`train.py --ckpt`.
+Selected at step 90000 as the maximum of the composite validation metric. It is a full Lightning checkpoint, so it can also be resumed from with `train.py --ckpt`.
 
-Note that the dataset paths recorded inside the checkpoint are the ones from our
-cluster. They are inert for `inference.py` and for resuming training, which
-reads its configuration from the config file you pass on the command line, but
-`validate.py` builds its dataloaders from the embedded configuration and will
-need them pointed at your own copies of the data.
+Note that the dataset paths recorded inside the checkpoint are the ones from our cluster. They are inert for `inference.py` and for resuming training, which reads its configuration from the config file you pass on the command line, but `validate.py` builds its dataloaders from the embedded configuration and will need them pointed at your own copies of the data.
 
 ## Quickstart: extracting embeddings
 
@@ -109,8 +103,7 @@ scripts/             preprocessing, similar-region, and SLURM job scripts
 
 ## Training data
 
-The derived annotations are released as **Discogs-VI-SIREN** (SImilar REgioNs
-between musical versions in Discogs-VI):
+The derived annotations are released as **Discogs-VI-SIREN** (SImilar REgioNs between musical versions in Discogs-VI):
 
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21742034-blue)](https://doi.org/10.5281/zenodo.21742034)
 
@@ -131,44 +124,85 @@ Discogs-VI-SIREN is released under the MIT license, separately from the code in 
 
 ### Discogs-VI
 
-The bash scripts under `scripts/slurm/` record exactly how each step was run,
-including the arguments used.
+The bash scripts under `scripts/slurm/` record exactly how each step was run, including the arguments used.
 
 1. Convert to 16 kHz 16-bit wav — `scripts/slurm/preprocess-discogs-vi-yt.sh`
 1. Silence filtering by RMS — `scripts/slurm/find-silent-tracks.sh`
 1. Move the silent tracks to a separate directory
-1. Tag the audio segments of the remaining tracks with
-   [PANNs](https://github.com/qiuqiangkong/audioset_tagging_cnn). We used the
-   `Cnn14_16k` model (mAP 0.438) over 10 s windows with a 1 s hop, keeping the
-   top 20 tags per window, with the 16 kHz mel front-end the checkpoint expects
-   (window 512, hop 160, 64 mel bins, `fmin` 50, `fmax` 8000). It writes one
-   JSON of per-segment tags per track, which is the input to the next step.
-   Like the CLEWS step below, this runs someone else's model in its own
-   environment. Our batched, SLURM-partitioned inference driver is a single
-   commit on top of upstream, on the `unified-track-and-version-id` branch of
-   [raraz15/audioset_tagging_cnn](https://github.com/raraz15/audioset_tagging_cnn/tree/unified-track-and-version-id)
-1. Find which segments are non-music — `scripts/slurm/non-music-finder.sh`.
-   This also reports tracks that are entirely silent
+1. Tag the audio segments of the remaining tracks with [PANNs](https://github.com/qiuqiangkong/audioset_tagging_cnn). We used the `Cnn14_16k` model (mAP 0.438) over 10 s windows with a 1 s hop, keeping the top 20 tags per window, with the 16 kHz mel front-end the checkpoint expects (window 512, hop 160, 64 mel bins, `fmin` 50, `fmax` 8000). It writes one JSON of per-segment tags per track, which is the input to the next step. Like the CLEWS step below, this runs someone else's model in its own environment. Our batched, SLURM-partitioned inference driver is a single commit on top of upstream, on the `unified-track-and-version-id` branch of [raraz15/audioset_tagging_cnn](https://github.com/raraz15/audioset_tagging_cnn/tree/unified-track-and-version-id)
+1. Find which segments are non-music — `scripts/slurm/non-music-finder.sh`. This also reports tracks that are entirely silent
 1. Move the completely non-music tracks to a separate directory
-1. Split the remainder into `train/`, `val/database` and `test/database`
-   (the clean tracks form the retrieval database)
+1. Split the remainder into `train/`, `val/database` and `test/database` (the clean tracks form the retrieval database)
 
 ## Similar region location
 
-1. Extract CLEWS embeddings — `scripts/slurm/clews-embedding-extraction.sh`.
-   This requires a checkout of the original [CLEWS](https://github.com/sony/clews)
-   library. This step stands apart from the rest of the repository: it runs
-   CLEWS, not our model, in its own conda environment with CLEWS's own
-   dependencies — not the `unified` environment — and it is needed only to
-   rebuild the training annotations from scratch. If you download the released
-   segment-clique CSVs, you can skip it entirely.
-1. Find non-music segments (see above)
-1. Locate the top-10 similar regions —
-   `scripts/slurm/similar-region-location.sh`
+Discogs-VI groups versions at the level of whole tracks: it says that two recordings realise the same musical work, but not *where* in each recording the shared material sits.
+Two versions can differ in intro length, section order, repeats, outros, and spoken or applause passages, so a 20 s window drawn at random from one is often not a positive for a 20 s window drawn at random from the other.
+This stage recovers the missing alignment by locating, for every pair of versions inside a track clique, the regions of the two recordings that actually correspond.
+We call one such matching region pair a *basin*; the basins are what `similar-regions.csv` contains.
+
+The pipeline has three steps:
+
+1. Extract CLEWS embeddings — `scripts/slurm/clews-embedding-extraction.sh`, wrapping `scripts/similar-region/clews-embedding-extraction.py`. This requires a checkout of the original [CLEWS](https://github.com/sony/clews) library. This step stands apart from the rest of the repository: it runs CLEWS, not our model, in its own conda environment with CLEWS's own dependencies — not the `unified` environment — and it is needed only to rebuild the training annotations from scratch. If you download the released segment-clique CSVs, you can skip it entirely.
+1. Find non-music segments (see [Data preprocessing](#discogs-vi) above)
+1. Locate the similar regions — `scripts/slurm/similar-region-location.sh`, wrapping `scripts/similar-region/similar-region-location.py`
+
+### CLEWS embeddings
+
+Each track is cut into 20 s shingles with a 1 s hop, and every shingle is embedded independently with the released `dvi-clews` checkpoint.
+The output is one `.npy` per track holding an `(n_shingles, d)` matrix in `float16`, mirroring the input directory layout, so a track becomes a *sequence* of embeddings rather than a single vector.
+The driver runs under Lightning Fabric and shards the file list across GPUs with a `DistributedSampler`, skipping any track whose output already exists, so an interrupted job can simply be resubmitted.
+Tracks shorter than 10 s are skipped.
+The 1 s hop is what the rest of the pipeline is built around: it sets the time resolution at which a matching region can be localised, and it is the same hop the non-music annotations use, so the two index the same segment grid.
+
+### Basin finding
+
+`similar-region-location.py` walks the cliques of `Discogs-VI-YT-<date>-light.json` and processes each clique in its own worker process, caching a version's embeddings across all the pairs that version takes part in.
+Cliques are sorted largest-first so the long-running ones start early and the worker pool drains evenly.
+
+For each version, the CLEWS embedding matrix is loaded and then *masked*.
+A shingle is discarded if it is silent — at least `--silence-min-fraction` (0.5) of its 0.1 s frames fall below `--silence-threshold-db` (−30 dBFS) — or if the PANNs step tagged it as non-music.
+Masking sets those embeddings to `inf`, which makes every distance involving them infinite and so removes them from consideration without disturbing the segment indexing.
+A version with 50 % or more silent shingles, or 50 % or more non-music shingles, is dropped from the clique entirely.
+
+For each pair of surviving versions, a full pairwise distance matrix `H` is computed between their shingle embeddings, using the dimension-normalized squared Euclidean distance.
+`H[i, j]` is the distance between the shingle starting at second `i` of the first version and the shingle starting at second `j` of the second, so `H` is a cross-similarity image in which corresponding passages show up as low-valued regions.
+The pair is skipped if masking left the matrix entirely non-finite.
+
+`find_basins` in [src/similar_region/basin_finding.py](src/similar_region/basin_finding.py) then extracts matching regions from `H` greedily:
+
+1. Take the global minimum of the matrix — the *hole* — which is the best-matching shingle pair still available.
+1. Stop if that hole is not deep enough, i.e. its distance is at or above the ridge height. Holes are consumed in increasing order of depth, so the first failure ends the search for this pair.
+1. Flood-fill from the hole with a tolerance of `ridge_height − hole_height`, using 4-connectivity. The flooded region is the *basin*: the contiguous set of cells around the hole that stay similar, which is what distinguishes a passage that matches over time from a single lucky frame.
+1. Mask the basin's bounding rectangle to `inf` (`--removal-type rectangle`, the setting we used) and repeat, forcing the next iteration into a different part of the matrix.
+
+The ridge height is `min(--global-pct-threshold, --universal-dist-threshold)`: the 5th percentile of the finite distances in *this* matrix, capped at an absolute distance of 2.0.
+The percentile term adapts to the pair — a close pair has many low cells, a distant pair few — while the absolute cap stops a pair with no genuine correspondence from having its own 5th percentile accepted as a match, which is the main source of false positives.
+Two shape filters follow: a basin of area 1 is a single-cell artifact and is dropped, and a basin whose bounding box covers 900 cells or more is dropped as too diffuse to name a specific passage.
+At most `--max-basins-write` (50) basins are written per version pair.
+
+The output is one `similar-regions.csv` per split, one row per basin, with the columns listed in [src/similar_region/field_names.py](src/similar_region/field_names.py): the track clique id, both version and YouTube ids, both track durations, the shingle duration, the basin index `k` within the pair, the hole depth `hole_height`, the hole's start time in each version (`hole_v0_start`, `hole_v1_start`, in seconds), and `basin_area`.
+A row therefore asserts that `[hole_v0_start, hole_v0_start + segment_duration)` in the first version and `[hole_v1_start, hole_v1_start + segment_duration)` in the second cover the same musical passage.
+Rows are flushed per clique, and a `parameters-similar-regions.json` recording every argument, the run timestamp and the git commit is written next to the CSV.
 
 ## Segment cliques
 
-`scripts/slurm/segment-clique-location.sh` turns the pairwise similar regions into segment cliques, producing the `segment-cliques.csv` files that `train_dataloader.csv_path` and the validation dataloaders consume. These CSVs are exactly what is released as Discogs-VI-SIREN (see [Training data](#training-data)), so this pipeline only needs to be re-run if you want to rebuild them from scratch.
+The similar regions are strictly *pairwise*: each row relates one segment of one version to one segment of one other version.
+Training with hard positive mining needs more than that — given an anchor segment, we want every other segment covering the same passage, across all versions of the work.
+`scripts/slurm/segment-clique-location.sh`, wrapping `scripts/similar-region/segment-clique-location.py`, computes that transitive closure and turns pairwise basins into *segment cliques*.
+
+Each basin row is expanded into its two 20 s intervals, one per version.
+Within a track clique all intervals are bucketed by `version_id`, and two basins are merged when they place intervals on the *same* version that overlap by at least `--merge-condition-dur` (19 s out of 20).
+Merging uses a union-find, so the relation is transitive: if basins A and B nearly coincide on version *x*, and B and C nearly coincide on version *y*, then A, B and C all land in one component even though A and C were never compared directly.
+Each connected component becomes one segment clique, holding the intervals of every basin in it.
+The 19 s threshold is deliberately strict — it demands near-identical intervals rather than mere overlap, because a loose threshold lets a component chain along slightly shifted windows and eventually swallow the whole track.
+Identical `(version_id, start, end)` triples inside a clique are de-duplicated, keeping the first occurrence.
+
+The result is `segment-cliques.csv`, one row per segment, with `track_clique_id`, `segment_clique_id` (a running `S-0000000` identifier), `version_id`, `youtube_id`, `segment_start_time`, `segment_end_time` and `track_duration`.
+Rows sharing a `segment_clique_id` are mutually positive at the segment level, and this is exactly what `train_dataloader.csv_path` and the validation dataloaders consume.
+A `parameters-segment-cliques.json` is written alongside, again recording the arguments, timestamp and git commit.
+
+These CSVs are exactly what is released as Discogs-VI-SIREN (see [Training data](#training-data)), so this pipeline only needs to be re-run if you want to rebuild them from scratch.
 
 ## Training
 
@@ -176,10 +210,9 @@ including the arguments used.
 python train.py configs/train/fish.yaml
 ```
 
-Paths in the config point at the authors' cluster and must be updated to your
-own dataset locations. Weights & Biases logging is on by default and configured
-under the `wandb:` key — pass `--no-wandb` to disable it, or change `entity` to
-your own.
+The model reported in the paper was trained on 4 GPUs. `scripts/slurm/train-4-gpu.sh` and `scripts/slurm/train-1-gpu.sh` are the SLURM job scripts used for the 4-GPU and single-GPU cases respectively; the 4-GPU script launches `train.py` under `torchrun` for distributed data parallel training, the 1-GPU script calls `train.py` directly.
+
+Paths in the config point at the authors' cluster and must be updated to your own dataset locations. Weights & Biases logging is on by default and configured under the `wandb:` key — pass `--no-wandb` to disable it, or change `entity` to your own.
 
 ## Evaluation
 
@@ -190,43 +223,62 @@ python evaluate.py <query_embeddings> <ground_truth.csv> \
     --output-dir <results_dir>
 ```
 
-`--id-level` selects between `track` and `version` identification. Reported
-metrics include mean average precision (M-AP) and M-JNAR, the mean normalized
-average ranking (unbiased variant).
+`--id-level` selects between `track` and `version` identification. Reported metrics include mean average precision (M-AP) and M-NAR, the mean normalized average ranking (unbiased variant).
+
+The database must be given in exactly one of three forms: `--database-embeddings` for a directory of per-track `.npy` files, `--database-memmap` for a `database.mm` built by an earlier run, or `--database-index` for an index already trained and populated with `--save-index`.
+
+### SLURM wrappers
+
+`scripts/slurm/` holds the job scripts the reported numbers were produced with. The per-task ones fix whatever differs between the two tasks and take the paths positionally:
+
+```bash
+# queries  ground-truth  output-dir  db-flag  db-path
+sbatch scripts/slurm/evaluate-track.sh   <queries> <gt.csv> <out> --database-embeddings <db_dir>
+sbatch scripts/slurm/evaluate-version.sh <queries> <gt>     <out> --database-memmap     <db.mm>
+```
+
+`evaluate-track.sh` runs `--id-level track` with `--top-N 10`, `evaluate-version.sh` runs `--id-level version` with `--top-N 10000`, and both set `--num-workers` from the job's CPU allocation. `scripts/slurm/evaluate.sh` is the unconstrained variant: it also takes `--n-lists`, `--n-probes`, `--top-k` and `--top-N` as arguments, which is how the cuVS parameters were swept. `scripts/slurm/exhaustive-retrieval.sh` just forwards `"$@"` to `exhaustive-retrieval.py`.
+
+### The `-all-queries` scripts
+
+`evaluate-track-all-queries.sh` and `evaluate-version-all-queries.sh` are the ones we actually launch. Given a single embedding root, each loops over the three query conditions — `clean`, `clean-manipulated`, `clean-manipulated-degraded` — deriving the query, database, ground-truth and output paths itself, and choosing `--database-memmap` over `--database-embeddings` automatically when a `database.mm` is present.
+
+```bash
+sbatch scripts/slurm/evaluate-track-all-queries.sh   <emb_root> <audio_root> [query_type_idx]
+sbatch scripts/slurm/evaluate-version-all-queries.sh <emb_root> [query_type_idx]
+```
+
+The optional trailing index (`0`, `1` or `2`) restricts the run to one query condition instead of all three.
+
+They assume the layout that `inference.py` produces over the query sets built by `manipulate-and-degrade.py`:
+
+```
+<emb_root>/database/                     reference embeddings (plus database.mm if built)
+<emb_root>/queries/chunks/<query_type>/  track-ID queries (short excerpts)
+<emb_root>/queries/tracks/<query_type>/  version-ID queries (full tracks)
+```
+
+Results go to `<emb_root>/../../eval/track-id/<dataset>/chunks/<query_type>/` and `<emb_root>/../../eval/version-id/<dataset>/<query_type>/`, with `<dataset>` the basename of the embedding root. The two differ in where the ground truth comes from: the track-ID script reads the `ground-truth.csv` that `manipulate-and-degrade.py` wrote next to the query audio — hence the extra `<audio_root>` argument — while the version-ID script picks the Discogs-VI or SHS100K2 clique file by matching `dvi` or `shs` in the embedding root's name. For version identification the `clean` queries are the database tracks themselves, so that condition queries the database against itself.
+
+Both are cluster-specific in their partitions and, for version identification, in their hard-coded ground-truth paths — see [A note on the SLURM scripts](#a-note-on-the-slurm-scripts).
 
 ## Datasets
 
-The experiments use Discogs-VI and SHS100K2 for version identification, and the
-neural-music-fp test set (drawn from FMA) for track identification. Query
-degradation draws on TUT Acoustic Scenes 2016 for background noise, and the MIT
-Survey, AIR and OpenAIR impulse response collections plus a microphone impulse
-response set for convolutional degradation.
+The experiments use Discogs-VI and SHS100K2 for version identification, and the neural-music-fp test set (drawn from FMA) for track identification. Query degradation draws on TUT Acoustic Scenes 2016 for background noise, and the MIT Survey, AIR and OpenAIR impulse response collections plus a microphone impulse response set for convolutional degradation.
 
-[`data/`](data/) holds everything needed to reproduce the evaluation except the
-audio: the train/validation/test track lists in `data/splits/`, and the
-ground-truth files `evaluate.py` consumes in `data/ground-truth/` — clique
-definitions for version identification, and query-to-reference maps for track
-identification. See [data/README.md](data/README.md).
+[`data/`](data/) holds everything needed to reproduce the evaluation except the audio: the train/validation/test track lists in `data/splits/`, and the ground-truth files `evaluate.py` consumes in `data/ground-truth/` — clique definitions for version identification, and query-to-reference maps for track identification. See [data/README.md](data/README.md).
 
 ## A note on the SLURM scripts
 
-`scripts/slurm/` contains the exact job scripts used for this work. They are
-included for transparency and to document how each stage was invoked. Partitions,
-QOS names, module loads and dataset paths are specific to the authors' cluster,
-so treat them as reference rather than as a portable interface — the Python
-entry points they wrap are fully parameterised and are what you should build on.
+`scripts/slurm/` contains the exact job scripts used for this work. They are included for transparency and to document how each stage was invoked. Partitions, QOS names, module loads and dataset paths are specific to the authors' cluster, so treat them as reference rather than as a portable interface — the Python entry points they wrap are fully parameterised and are what you should build on.
 
 ## License
 
-This project is released under the **MIT License**. See [LICENSE](LICENSE) for
-the full text.
+This project is released under the **MIT License**. See [LICENSE](LICENSE) for the full text.
 
-The model components in `src/fish/model/nets/clews.py` are adapted from
-[sony/clews](https://github.com/sony/clews), which is also MIT licensed; the
-original copyright notice and permission notice are retained in that file.
+The model components in `src/fish/model/nets/clews.py` are adapted from [sony/clews](https://github.com/sony/clews), which is also MIT licensed; the original copyright notice and permission notice are retained in that file.
 
-The Discogs-VI-SIREN data released alongside this work carries its own MIT
-license, stated on its [Zenodo record](https://doi.org/10.5281/zenodo.21742034).
+The Discogs-VI-SIREN data released alongside this work carries its own MIT license, stated on its [Zenodo record](https://doi.org/10.5281/zenodo.21742034).
 
 ## Citation
 

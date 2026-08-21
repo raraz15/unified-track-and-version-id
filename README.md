@@ -35,6 +35,7 @@ Beyond reproducing the paper, some pieces here are worth reusing:
 - **Approximate and exhaustive retrieval behind the same metrics** — `evaluate.py` and `exhaustive-retrieval.py`, so approximation error can be separated from model error.
 - **Metrics without the usual bugs** — the relevant set counts only versions actually in the database, the query is dropped from its own results, truncating at K penalizes AP rather than inflating it, unretrieved relevant items are charged worst-case ranks in NAR, NAR is unbiased by default, and every number carries a confidence interval. [src/evaluation/metrics/](src/evaluation/metrics/)
 - **Database tooling** — hundreds of thousands of per-track `.npy` files merge into one `float16` memmap plus a CSV of track offsets, built once and reused across runs; those same offsets drive the GPU reduction. [src/retrieval/database/](src/retrieval/database/)
+- **A query manipulation and degradation chain that stands alone** — an editor-style manipulation chain and a loudspeaker → room → microphone degradation chain, driven by one YAML file, recording the parameters it sampled for every track, and depending on neither the model nor the retrieval stack. Usable as-is to build queries for any audio identification system. [src/signal_chain/](src/signal_chain/), described under [Query manipulation and degradation](#query-manipulation-and-degradation)
 
 > **TODO:** writing a trained index to disk and reloading it is implemented but disabled — a cuVS 25.8 bug with FP16 datasets, fixed in a later release. Until then every run retrains the index.
 
@@ -113,7 +114,7 @@ src/common/          audio I/O, tensor ops, shared utilities
 src/fish/            model, data pipeline, augmentations, validation
 src/retrieval/       embedding databases, cuVS indices, track-level reduction
 src/evaluation/      track- and version-identification metrics
-src/signal_chain/    query manipulation and degradation (RIR, noise, codecs, ...)
+src/signal_chain/    query manipulation and degradation (editing, RIR, noise, clipping)
 src/similar_region/  similar-region and basin finding
 configs/             training and signal-chain configurations
 scripts/             preprocessing, similar-region, and SLURM job scripts
@@ -224,6 +225,10 @@ The percentile term adapts to the pair — a close pair has many low cells, a di
 Two shape filters follow: a basin of area 1 is a single-cell artifact and is dropped, and a basin whose bounding box covers 900 cells or more is dropped as too diffuse to name a specific passage.
 At most `--max-basins-write` (50) basins are written per version pair.
 
+![Pairwise CLEWS distance matrices for a three-version clique, with the located basins outlined](assets/segment-cliques-contour.png)
+
+*All three pairs of a clique of three versions. Each panel is the distance matrix `H` between the shingles of two versions, in shingle index (seconds); bright is similar. Passages that correspond run as diagonal valleys, and the white contours are the basins `find_basins` kept — one row of `similar-regions.csv` each.*
+
 The output is one `similar-regions.csv` per split, one row per basin, with the columns listed in [src/similar_region/field_names.py](src/similar_region/field_names.py): the track clique id, both version and YouTube ids, both track durations, the shingle duration, the basin index `k` within the pair, the hole depth `hole_height`, the hole's start time in each version (`hole_v0_start`, `hole_v1_start`, in seconds), and `basin_area`.
 A row therefore asserts that `[hole_v0_start, hole_v0_start + segment_duration)` in the first version and `[hole_v1_start, hole_v1_start + segment_duration)` in the second cover the same musical passage.
 Rows are flushed per clique, and a `parameters-similar-regions.json` recording every argument, the run timestamp and the git commit is written next to the CSV.
@@ -256,6 +261,40 @@ python train.py configs/train/fish.yaml
 The model reported in the paper was trained on 4 GPUs. `scripts/slurm/train-4-gpu.sh` and `scripts/slurm/train-1-gpu.sh` are the SLURM job scripts used for the 4-GPU and single-GPU cases respectively; the 4-GPU script launches `train.py` under `torchrun` for distributed data parallel training, the 1-GPU script calls `train.py` directly.
 
 Paths in the config point at the authors' cluster and must be updated to your own dataset locations. Weights & Biases logging is on by default and configured under the `wandb:` key — pass `--no-wandb` to disable it, or change `entity` to your own.
+
+## Query manipulation and degradation
+
+![The signal manipulation and audio degradation chain used to build the evaluation queries](assets/audio-signal-chain.png)
+
+The evaluation queries are not the reference recordings. Each clean track is first *manipulated*, the way an editor alters a master track, and then *degraded*, the way playing that track through a loudspeaker into a room and recording it with a microphone would degrade it. `manipulate-and-degrade.py` builds the three query conditions the paper reports — `clean`, `clean-manipulated` and `clean-manipulated-degraded` — writing both the processed full tracks (version-identification queries) and one sampled 10 s chunk per track (track-identification queries), plus the `ground-truth.csv` that maps every query back to its reference and records the chunk boundaries. Every transform samples its parameters per track, and the sampled values are written next to each query as a JSON *history*; those histories are what the [released query metadata](https://doi.org/10.5281/zenodo.22027253) holds, which is how the query audio can be rebuilt exactly without us distributing it.
+
+Both chains live in [src/signal_chain/](src/signal_chain/) and follow the figure above. Probabilities and ranges below are the defaults in [configs/audio-signal-chain/params.yml](configs/audio-signal-chain/params.yml).
+
+**Signal manipulation** — [systems/manipulator.py](src/signal_chain/systems/manipulator.py). Exactly one of pitch shifting (±12 semitones), time stretching (0.5–2×), VariSpeed (0.5–2×) or an identity transform; then a seven-band parametric EQ (±12 dB, half the time); then peak normalization *or* clipping, chosen 50/50, so that the signal stays inside ±1; then a gain of −12 to 0 dB, half the time. VariSpeed ([systems/varispeed.py](src/signal_chain/systems/varispeed.py)) is ours: it resamples with `soxr_vhq`, so tempo and pitch move together as they would on a varispeed playback device, rather than independently as `TimeStretch` and `PitchShift` do.
+
+**Audio degradation** — three systems in series, each one a `Compose`:
+
+- *Playback device* — [systems/playback_device.py](src/signal_chain/systems/playback_device.py). A limiter (threshold −12 to −1 dBFS), a high-pass filter (cutoff 20–150 Hz, rolloff 6–18 dB/octave), and saturation that is either soft (tanh) or hard clipping; each of the three applies half the time.
+- *Room* — [systems/room.py](src/signal_chain/systems/room.py). Additive background noise at −3 to 15 dB SNR, then convolution with a room impulse response.
+- *Microphone* — [systems/microphone.py](src/signal_chain/systems/microphone.py). A microphone impulse response, then hard clipping and a −6 to 0 dB gain, each half the time.
+
+The background-noise and impulse-response transforms in [src/signal_chain/lib/](src/signal_chain/lib/) are audiomentations' `AddBackgroundNoise` and `ApplyImpulseResponse` re-implemented on this repository's audio loading, so the noise and IR collections are read, resampled and cached the same way as every other audio file here.
+
+```bash
+python manipulate-and-degrade.py <clean_audio_dir> \
+    --output-dir <queries_dir> \
+    --write-tracks \
+    --sample-chunks \
+    --chunk-duration 10.0
+```
+
+The noise and IR paths in `params.yml` point at the authors' cluster; set them to your own copies of the 16 kHz degradation sets released at <https://doi.org/10.5281/zenodo.22026053>.
+
+### Using the signal chain on its own
+
+Nothing under `src/signal_chain/` touches the model, the retrieval stack or this project's datasets, so it is usable on its own — if you need realistic manipulated and degraded queries for some other identification or fingerprinting system, take the directory as it stands. It needs `audiomentations`, `librosa`, `scipy`, `soxr` and this repository's [src/common/audio.py](src/common/audio.py) for I/O; no checkpoint, no GPU, no cuVS, and nothing from `src/fish/` or `src/retrieval/`.
+
+Two ways in. `manipulate-and-degrade.py` is the batch entry point: point it at a directory of 16 kHz mono `.wav` files and it walks the tree with a torch `DataLoader`, writes the query sets, mirrors the input directory structure, records the per-track parameter histories, and skips tracks whose outputs already exist so an interrupted run can be resubmitted. Or use the chains directly — `Manipulator(params)` and `Compose([PlaybackDevice(params), Room(params), Microphone(params)])` are ordinary `audiomentations` transforms that take a `(channels, samples)` `float32` array and a sample rate, so they drop into an existing augmentation pipeline. The one assumption to keep in mind is that the sample rate is fixed at 16 kHz by `src/common/audio.SAMPLE_RATE`, and the degradation chain expects your background-noise and impulse-response collections to be at that rate too.
 
 ## Evaluation
 

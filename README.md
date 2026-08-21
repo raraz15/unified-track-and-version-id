@@ -2,6 +2,10 @@
 
 Official implementation of **"Unified Music Identification for Tracks and Versions"** (ISMIR 2026).
 
+[![arXiv](https://img.shields.io/badge/arXiv-2608.19919-b31b1b)](https://arxiv.org/abs/2608.19919)
+
+The pre-print is available at <https://arxiv.org/abs/2608.19919>.
+
 A single embedding model handles both *track identification* (finding the exact recording a short, possibly degraded query came from) and *version identification* (finding other renditions of the same underlying musical work).
 Audio is embedded segment-by-segment, and the same embedding space serves both retrieval tasks.
 
@@ -335,7 +339,11 @@ title = {Unified {Music} {Identification} for {Tracks} and {Versions}},
 booktitle = {Proc. of the 27th {Int}. {Soc}. for {Music} {Information} {Retrieval} {Conf}. ({ISMIR})},
 author = {Araz, R. Oguz and Serrà, Joan and Mitsufuji, Yuki and Serra, Xavier and Bogdanov, Dmitry},
 year = {2026},
+eprint = {2608.19919},
+archiveprefix = {arXiv},
+primaryclass = {cs.SD},
+url = {https://arxiv.org/abs/2608.19919},
 }
 ```
 
-> R. O. Araz, J. Serrà, Y. Mitsufuji, X. Serra, and D. Bogdanov, "Unified Music Identification for Tracks and Versions," in Proc. of the 27th Int. Soc. for Music Information Retrieval Conf. (ISMIR), 2026.
+> R. O. Araz, J. Serrà, Y. Mitsufuji, X. Serra, and D. Bogdanov, "Unified Music Identification for Tracks and Versions," in Proc. of the 27th Int. Soc. for Music Information Retrieval Conf. (ISMIR), 2026. arXiv:2608.19919.
